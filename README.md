@@ -4,8 +4,8 @@ This repository shall be used for versioning source code related to BC coursewor
 
 ## Contributors
 
-João
-Stephan
-Leonardo
-Alessandro
-Rafael
+* João Paulo
+* Stephan
+* Leonardo
+* Alessandro
+* Rafael
