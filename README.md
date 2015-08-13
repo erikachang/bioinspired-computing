@@ -2,6 +2,10 @@
 
 This repository shall be used for versioning source code related to BC courseworks.
 
+Language: Python, because it rules
+
+URL for Beamer Presentation: https://www.overleaf.com/3092671jfjmkr
+
 ## Contributors
 
 * João Paulo
