@@ -1,7 +1,11 @@
-Contributors:
+## Contributors
 
-Joao
+João
+
 Stephan
+
 Leonardo
+
 Alessandro
+
 Refael
