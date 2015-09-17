@@ -6,7 +6,6 @@ contains genetic operators (such as crossover and
 mutation).
 """
 
-#Teste
 import random;
 import genetic_operators;
 
