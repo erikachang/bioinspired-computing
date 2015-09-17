@@ -139,7 +139,7 @@ def calculateFitness(tree):
     # Digite aqui sua funcao de fitness
     levelSize = len(level) - 1;
 	
-    fitness = (levelSize - positionReached) * (levelSize) * (getTreeSize(root));
+    fitness = (levelSize - positionReached + 1) * (levelSize) * (getTreeSize(root));
 	
     """
     RAFAEL: 

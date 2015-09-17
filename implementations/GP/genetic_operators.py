@@ -1,13 +1,19 @@
 __author__ = 'Thomas'
+from random import randint
 
 def getParentByTournament(population, tournamentSize):
     tournamentPopulation = [];
 
     #Digite aqui o codigo para a escolha dos pais por torneio
+    for x in rand(0,3):
+	randParent = randint(0, tournamentSize)
+	tournamentPopulation.append( population[randParent] )
+
+    tournamentPopulation.sort(key=lambda, parent:parent.fitness)
 
     return tournamentPopulation[0];
 
-def executeCrossover(parent1, parent2):
+def executeCrossover(parent1, parent2, taxaCross):
     """
     Executes crossover between two parents
 
@@ -20,6 +26,10 @@ def executeCrossover(parent1, parent2):
     child2 = None;
 
     #Digite aqui o codigo para a realizacao do crossover
+    boolTaxa = randint(0, 100)
+
+    if boolTaxa < taxaCross :
+	print "TODO - crossover"
 
 
     return child1, child2;
