@@ -8,7 +8,6 @@ mutation).
 
 import random;
 import genetic_operators;
-import utils
 
 class GeneticProgramming:
 
@@ -33,9 +32,11 @@ class GeneticProgramming:
         self.functions = ['IsPlain','IsHole','IsEnemy'];
 
         # Terminais
-        self.terminals = ['R', 'J', 'F'];
+        self.terminals = [n.value for n in utils.Moves];
 
+		# Population
         self.population = [];
+		self.best = None;
 
         # Tamanho da populacao
         self.populationSize =  populationSize
@@ -64,19 +65,19 @@ class GeneticProgramming:
         Generates the initial population of the evolution
         """
         # Codigo para geracao da populacao inicial
-        pass
-			
-    def getNextGeneration(self, population):
-	print "TODO - Generates Next Generation "
-	"""
-	Generates Next Generation 
-	
-	- Executa CrossOver
-	- Executa Elitismo
-	- Executa Mutacoes
-	- Descarta Solucoes Impossiveis (?)
-	
-	"""
+		
+        return [];
+		
+	def getNextGeneration(self):
+		"""
+		Generates Next Generation 
+		
+		- Executa CrossOver
+		- Executa Elitismo
+		- Executa Mutações
+		
+		"""
+		return [];
 
     def run(self):
         """
@@ -87,22 +88,21 @@ class GeneticProgramming:
         numGenerations = 0;
 
         while(numGenerations < self.maxGenerations):
+        {
             if(numGenerations == 0):
-		self.generateInitialPopulation();
-	    else:	
-		population = self.getNextGeneration(self.population);
+			    generateInitialPopulation();
+            else:
+                population = getNextGeneration();
 
-            #Coloque aqui o seu codigo para execucao de GP
-
-	    """
-	    RAFAEL:
-	    Testa Posicao Alcancada pelo Player (?)
-	    Calcula Fitness de Toda a Populacao
-	    Se Melhor Resultado Encontrado > Melhor Resultado Ate Entao => Substitui
-	    Ordena Populacao (?)
-	    """
-			
-			#Finally...
+            #Calcula Fitness de Toda a Populacao
+            for current in population:
+            
+                current.fitness = calculateFitness(current);
+            	
+                if best.fitness < current.fitness:
+                    best = current;
+            
+            #Finally...
             numGenerations = numGenerations + 1;
-
+        }
         return self.population[0];
