@@ -9,6 +9,8 @@ import sys
 
 level = ['P','P','P','H','H','P','P','P','H','P','P','P','P','H','P','P','E','E','P','P'];
 
+#Teste Commit
+
 class LevelPositionTypes(Enum):
     plain = 'P'
     hole = 'H'
