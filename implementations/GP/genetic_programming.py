@@ -8,6 +8,7 @@ mutation).
 
 import random;
 import genetic_operators;
+import utils
 
 class GeneticProgramming:
 
@@ -34,9 +35,9 @@ class GeneticProgramming:
         # Terminais
         self.terminals = [n.value for n in utils.Moves];
 
-		# Population
+	# Population
         self.population = [];
-		self.best = None;
+	self.best = None;
 
         # Tamanho da populacao
         self.populationSize =  populationSize
@@ -74,7 +75,7 @@ class GeneticProgramming:
 		
 		- Executa CrossOver
 		- Executa Elitismo
-		- Executa Mutações
+		- Executa Mutacoes
 		
 		"""
 		return [];
@@ -88,7 +89,6 @@ class GeneticProgramming:
         numGenerations = 0;
 
         while(numGenerations < self.maxGenerations):
-        {
             if(numGenerations == 0):
 			    generateInitialPopulation();
             else:
@@ -104,5 +104,5 @@ class GeneticProgramming:
             
             #Finally...
             numGenerations = numGenerations + 1;
-        }
+        
         return self.population[0];

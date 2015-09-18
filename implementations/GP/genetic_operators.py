@@ -12,7 +12,7 @@ def getParentByTournament(population, tournamentSize):
 	tournamentPopulation.append( population[randParent] )
     
     #ordena os 4 elementos pelo fitness
-    tournamentPopulation.sort(key=lambda, parent:parent.fitness)
+    tournamentPopulation.sort(key=lambda parent:parent.fitness)
 
     #retorna o de maior fitness
     return tournamentPopulation[0];
@@ -114,7 +114,7 @@ def executeCrossover(parent1, parent2, taxaCross):
     return child1, child2;
 
 
-def executeMutation(individual, functions, terminals):
+def executeMutation(individual, functions, terminals, taxaMutacao):
     """
     Executes the mutation of a given individual to create a new one
 
@@ -124,8 +124,19 @@ def executeMutation(individual, functions, terminals):
     :return:           the new individual
     """
 
-    newIndividual = None;
+    newIndividual = copy.deepcopy(individual);
 
     #Digite aqui o codigo para a realizacao da mutacao
+    
+    while randint(0,100) < taxaMutacao :
+        indElem = itens(newIndividual)
+	
+	randInd = randint(0,indElem)
+	
+	c1 = navega(newIndividual, randInd)
+
+        c1[0].value += randint(0,10)
+
+	
 
     return newIndividual;
