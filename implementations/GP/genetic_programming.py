@@ -33,7 +33,8 @@ class GeneticProgramming:
         self.functions = ['IsPlain','IsHole','IsEnemy'];
 
         # Terminais
-        self.terminals = [n.value for n in utils.Moves];
+        #self.terminals = [n.value for n in utils.Moves];
+	self.terminals = ['R','J','F'];
 
 	# Population
         self.population = [];
@@ -69,16 +70,16 @@ class GeneticProgramming:
 		
         return [];
 		
-	def getNextGeneration(self):
-		"""
-		Generates Next Generation 
-		
-		- Executa CrossOver
-		- Executa Elitismo
-		- Executa Mutacoes
-		
-		"""
-		return [];
+    def getNextGeneration(self):
+	"""
+	Generates Next Generation 
+	
+	- Executa CrossOver
+	- Executa Elitismo
+	- Executa Mutacoes
+	
+	"""
+	return [];
 
     def run(self):
         """
@@ -90,12 +91,12 @@ class GeneticProgramming:
 
         while(numGenerations < self.maxGenerations):
             if(numGenerations == 0):
-			    generateInitialPopulation();
+		self.generateInitialPopulation();
             else:
-                population = getNextGeneration();
+                self.population = self.getNextGeneration();
 
             #Calcula Fitness de Toda a Populacao
-            for current in population:
+            for current in self.population:
             
                 current.fitness = calculateFitness(current);
             	
@@ -105,4 +106,4 @@ class GeneticProgramming:
             #Finally...
             numGenerations = numGenerations + 1;
         
-        return self.population[0];
+       return best;
