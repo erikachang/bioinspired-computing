@@ -8,15 +8,14 @@ def getParentByTournament(population, tournamentSize):
 
     #Digite aqui o codigo para a escolha dos pais por torneio
     #pega 4 elementos aleatorios da populacao
-    for x in range(0,tournamentSize):
-	print len(population)-1
+    for x in range(tournamentSize):
 	randParent = randint(0, len(population)-1)
 	tournamentPopulation.append( population[randParent] )
     
     #ordena os 4 elementos pelo fitness
     tournamentPopulation.sort(key=lambda parent:parent.fitness)
 
-    #retorna o de maior fitness
+    #retorna o de menor fitness
     return tournamentPopulation[0];
 
 def itens(tree):

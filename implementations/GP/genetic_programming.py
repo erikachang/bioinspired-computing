@@ -63,7 +63,7 @@ class GeneticProgramming:
         # Probabilidade de Mutacao dos nodos
         self.mutationProbability = mutationProbability;
 
-    def geraPopulation(self, tree, left):
+    def generatePopulation(self, tree, left):
 	if left == 1:
 	    tree.value = self.terminals[randint(0,2)]
 	    print "treeVAlE", tree.value
@@ -79,8 +79,8 @@ class GeneticProgramming:
 	tree.value = self.functions[randint(0,2)]
 	print "treeVAlDFunc", tree.value
 
-        self.geraPopulation(tree.left, 1)
-	self.geraPopulation(tree.right, 0)
+        self.generatePopulation(tree.left, 1)
+	self.generatePopulation(tree.right, 0)
 
     def generateInitialPopulation(self):
         """
@@ -92,8 +92,8 @@ class GeneticProgramming:
 	    novo.left = utils.Tree()
 	    novo.right = utils.Tree()
 	    novo.value = self.functions[randint(0,2)]
-   	    self.geraPopulation(novo.left, 1)
-   	    self.geraPopulation(novo.right, 0)
+   	    self.generatePopulation(novo.left, 1)
+   	    self.generatePopulation(novo.right, 0)
 	    self.population.append(novo)
 	    print "----INSERINDO:", novo.value
 	    
@@ -170,17 +170,36 @@ def MeuTest():
 
     novo = utils.Tree()
     print gp.maxGenerations
-    gp.geraPopulation(novo, 0)
+    gp.generatePopulation(novo, 0)
     gp.population.append(novo)
     print "----INSERINDO:", novo.value
 
     novo = utils.Tree()
     print gp.maxGenerations
-    gp.geraPopulation(novo, 0)
+    gp.generatePopulation(novo, 0)
     gp.population.append(novo)
     print "----INSERINDO:", novo.value
 
-    genetic_operators.executeCrossover(gp.population[0], gp.population[1], 101)
+    novo = utils.Tree()
+    print gp.maxGenerations
+    gp.generatePopulation(novo, 0)
+    gp.population.append(novo)
+    print "----INSERINDO:", novo.value
+
+    novo = utils.Tree()
+    print gp.maxGenerations
+    gp.generatePopulation(novo, 0)
+    gp.population.append(novo)
+    print "----INSERINDO:", novo.value
+    for current in gp.population:       
+	current.fitness = utils.calculateFitness(current);
+
+    for current in gp.population:       
+	print "f", current.fitness
+
+    genetic_operators.getParentByTournament(gp.population, 2)
+
+    #genetic_operators.executeCrossover(gp.population[0], gp.population[1], 101)
 
 
 
