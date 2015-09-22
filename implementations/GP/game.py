@@ -14,8 +14,10 @@ if __name__ == "__main__":
     maxGenerations = 100;
 
     gp = GeneticProgramming(populationSize, maxGenerations);
+
     bestIndividual = gp.run();
 
-    print "Return Individual";
+    print "Return Individual"
     print "Fitness %i" % bestIndividual.fitness;
     print bestIndividual;
+

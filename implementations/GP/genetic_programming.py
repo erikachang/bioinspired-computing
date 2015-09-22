@@ -8,7 +8,9 @@ mutation).
 
 import random;
 import genetic_operators;
-import utils
+import utils;
+from random import randint
+import copy
 
 class GeneticProgramming:
 
@@ -30,11 +32,11 @@ class GeneticProgramming:
                                      0.03 (3%).
         """
         # Funcoes
-        self.functions = ['IsPlain','IsHole','IsEnemy'];
+        self.functions = [n.value for n in utils.LevelPositionTypes];
 
         # Terminais
-        #self.terminals = [n.value for n in utils.Moves];
-	self.terminals = ['R','J','F'];
+        self.terminals = [n.value for n in utils.Moves];
+	#self.terminals = ['R','J','F'];
 
 	# Population
         self.population = [];
@@ -61,15 +63,42 @@ class GeneticProgramming:
         # Probabilidade de Mutacao dos nodos
         self.mutationProbability = mutationProbability;
 
+    def geraPopulation(self, tree, left):
+	if left == 1:
+	    tree.value = self.terminals[randint(0,2)]
+	    print "treeVAlE", tree.value
+	    return
+	if randint(0,3) <  1:
+	    tree.value = self.terminals[randint(0,2)]
+	    print "treeVAlD", tree.value
+	    return
+
+	tree.left = utils.Tree()
+	tree.right = utils.Tree()
+	
+	tree.value = self.functions[randint(0,2)]
+	print "treeVAlDFunc", tree.value
+
+        self.geraPopulation(tree.left, 1)
+	self.geraPopulation(tree.right, 0)
 
     def generateInitialPopulation(self):
         """
         Generates the initial population of the evolution
         """
         # Codigo para geracao da populacao inicial
-		
-        return [];
-		
+	for x in range(0,100):
+  	    novo = utils.Tree()
+	    novo.left = utils.Tree()
+	    novo.right = utils.Tree()
+	    novo.value = self.functions[randint(0,2)]
+   	    self.geraPopulation(novo.left, 1)
+   	    self.geraPopulation(novo.right, 0)
+	    self.population.append(novo)
+	    print "----INSERINDO:", novo.value
+	    
+	    del(novo)
+
     def getNextGeneration(self):
 	"""
 	Generates Next Generation 
@@ -79,17 +108,40 @@ class GeneticProgramming:
 	- Executa Mutacoes
 	
 	"""
-	return [];
+	print "---- GET NEXT GEN"
+	minhaPopulacao = copy.deepcopy(self.population);
+	
+	parent1 = genetic_operators.getParentByTournament(minhaPopulacao, self.tournamentSize)
+
+	minhaPopulacao.pop(minhaPopulacao.index(parent1))
+
+	parent2 = genetic_operators.getParentByTournament(minhaPopulacao, self.tournamentSize)
+	children = genetic_operators.executeCrossover(parent1, parent2, self.crossoverProbability)
+	minhaPopulacao.append(children[0])
+	minhaPopulacao.append(children[1])
+
+	#genetic_operators.????? ELITISMO ???????
+
+	individual = minhaPopulacao[randint(0,len(minhaPopulacao))]
+	children = genetic_operators.executeMutation(individual, self.functions, self.terminals, self.mutationPercentage)
+	print children.value
+	minhaPopulacao.append( children )
+	print "---- FIM GET NEXT GEN"
+	return minhaPopulacao;
 
     def run(self):
+	print "-----RUN"
         """
         Executes the genetic program.
         :return: the best individual (solution) found to the problem.
         """
 
         numGenerations = 0;
+	
+	best = utils.Tree()
 
         while(numGenerations < self.maxGenerations):
+	    print "-----GERACAO:", numGenerations
             if(numGenerations == 0):
 		self.generateInitialPopulation();
             else:
@@ -98,12 +150,39 @@ class GeneticProgramming:
             #Calcula Fitness de Toda a Populacao
             for current in self.population:
             
-                current.fitness = calculateFitness(current);
+                current.fitness = utils.calculateFitness(current);
             	
                 if best.fitness < current.fitness:
                     best = current;
             
             #Finally...
-            numGenerations = numGenerations + 1;
+            numGenerations += 1;
         
-       return best;
+	return best;
+
+
+
+def MeuTest():
+    populationSize = 100;
+    maxGenerations = 100;
+
+    gp = GeneticProgramming(populationSize, maxGenerations);
+
+    novo = utils.Tree()
+    print gp.maxGenerations
+    gp.geraPopulation(novo, 0)
+    gp.population.append(novo)
+    print "----INSERINDO:", novo.value
+
+    novo = utils.Tree()
+    print gp.maxGenerations
+    gp.geraPopulation(novo, 0)
+    gp.population.append(novo)
+    print "----INSERINDO:", novo.value
+
+    genetic_operators.executeCrossover(gp.population[0], gp.population[1], 101)
+
+
+
+if __name__ == "__main__" :
+    MeuTest()
