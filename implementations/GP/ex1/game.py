@@ -10,14 +10,14 @@ from genetic_programming import GeneticProgramming
 
 if __name__ == "__main__":
 
-    populationSize = 100;
-    maxGenerations = 100;
+    populationSize = 100
+    maxGenerations = 100
 
-    gp = GeneticProgramming(populationSize, maxGenerations);
+    gp = GeneticProgramming(populationSize, maxGenerations)
 
-    bestIndividual = gp.run();
+    bestIndividual = gp.run()
 
     print "Return Individual"
-    print "Fitness", bestIndividual.fitness;
-    print bestIndividual;
+    print "Fitness", bestIndividual.fitness
+    print bestIndividual.printTree()
 
