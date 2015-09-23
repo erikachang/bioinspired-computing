@@ -24,7 +24,7 @@ class Tree():
         self.left = None
         self.right = None
         self.value = None   #LevelPositionTypes(Node) OR Moves(Terminal)
-	self.fitness = 0    #Fitness
+    	self.fitness = float("INF")    #Fitness
 
     
     def getTreeSize_rec(tree):
@@ -77,7 +77,7 @@ class Tree():
 	print "FIM", tree.value
 
     def printable(self):
-	print "LOL"
+	#print "LOL"
 	self.printable2(self)
 
 
@@ -128,38 +128,38 @@ def calculateFitness(tree):
         currentTree = root;
 		
 		#Iterate on Nodes
-	print "---INICIO DA LOCURA DO RAFA"
-	print currentTree.value
-	print [n.value for n in Moves]
+	#print "---INICIO DA LOCURA DO RAFA"
+	#print currentTree.value
+	#print [n.value for n in Moves]
 	#procurando um Terminal
 	#currentTree.printable()
         while not currentTree.value in [n.value for n in Moves]:
 		
             if (currentTree.value == LevelPositionTypes.plain.value):
                 if isPlain(currentLevel[positionReached]):
-		    print "CT", currentTree.value, "L", currentTree.left
+		    #print "CT", currentTree.value, "L", currentTree.left
                     currentTree = currentTree.left;
                 else:
                     currentTree = currentTree.right;
-		    print "CT", currentTree.value, "R", currentTree.right
+		    #print "CT", currentTree.value, "R", currentTree.right
             else:
                 if (currentTree.value == LevelPositionTypes.hole.value):
                     if isHole(currentLevel[positionReached]):
-			print "CT", currentTree.value, "L", currentTree.left
+			#print "CT", currentTree.value, "L", currentTree.left
                         currentTree = currentTree.left;
                     else:
-			print "CT", currentTree.value, "R", currentTree.right
+			#print "CT", currentTree.value, "R", currentTree.right
                         currentTree = currentTree.right;
                 else:
                     if (currentTree.value == LevelPositionTypes.enemy.value):
                         if isEnemy(currentLevel[positionReached]):
-			    print "CT", currentTree.value, "L", currentTree.right
+			    #print "CT", currentTree.value, "L", currentTree.right
                             currentTree = currentTree.left;
                         else:
-			    print "CT", currentTree.value, "R", currentTree.right
+			    #print "CT", currentTree.value, "R", currentTree.right
                             currentTree = currentTree.right;
 
-	print "---FIM DA LOCURA DO RAFA"
+	#print "---FIM DA LOCURA DO RAFA"
         #Certamente aqui tem um Terminals
         if (step == LevelPositionTypes.plain.value):
             if (currentTree.value == Moves.right or currentTree.value == Moves.jump):

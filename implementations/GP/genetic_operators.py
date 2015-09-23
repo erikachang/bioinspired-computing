@@ -34,7 +34,7 @@ def navega(tree, size) :
     if tree == None :
 	return (None, size)
 
-    print (tree.value, size)
+    #print (tree.value, size)
 
     if size-1 == 0 :
 	return (tree, size-1)
@@ -70,8 +70,8 @@ def executeCrossover(parent1, parent2, taxaCross):
 
     boolTroca = False
 
-    child1.printable()
-    child2.printable()
+    #child1.printable()
+    #child2.printable()
 
     #medicao da taxa de cross
     if boolTaxa < taxaCross :
@@ -85,7 +85,7 @@ def executeCrossover(parent1, parent2, taxaCross):
 
         randParent2 = randint(0, parent2Elem/2-1)
 
-	print "RAND P1,", randParent1, "RAND P2,", randParent2
+	#print "RAND P1,", randParent1, "RAND P2,", randParent2
 	
 	#original
         p1 = navega(parent1, randParent1*2+1)
@@ -98,9 +98,9 @@ def executeCrossover(parent1, parent2, taxaCross):
  	c2 = navega(child2, randParent2*2+1)
 
 	#transferindo
-	print ">>>>>", c1[0]
-	print ">>>>>", p1[0]
-	print ">>>>>", p2[0]
+	#print ">>>>>", c1[0]
+	#print ">>>>>", p1[0]
+	#print ">>>>>", p2[0]
 	#c1[0] = copy.deepcopy(p2[0])
 	c1[0].left = copy.deepcopy(p2[0].left)
 
@@ -115,8 +115,8 @@ def executeCrossover(parent1, parent2, taxaCross):
 
 	c2[0].value = p1[0].value
 
-    child1.printable()
-    child2.printable()
+    #child1.printable()
+    #child2.printable()
 
     return child1, child2;
 

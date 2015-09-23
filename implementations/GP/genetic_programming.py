@@ -66,18 +66,18 @@ class GeneticProgramming:
     def generatePopulation(self, tree, left):
 	if left == 1:
 	    tree.value = self.terminals[randint(0,2)]
-	    print "treeVAlE", tree.value
+	    #print "treeVAlE", tree.value
 	    return
 	if randint(0,3) <  1:
 	    tree.value = self.terminals[randint(0,2)]
-	    print "treeVAlD", tree.value
+	    #print "treeVAlD", tree.value
 	    return
 
 	tree.left = utils.Tree()
 	tree.right = utils.Tree()
 	
 	tree.value = self.functions[randint(0,2)]
-	print "treeVAlDFunc", tree.value
+	#print "treeVAlDFunc", tree.value
 
         self.generatePopulation(tree.left, 1)
 	self.generatePopulation(tree.right, 0)
@@ -95,7 +95,7 @@ class GeneticProgramming:
    	    self.generatePopulation(novo.left, 1)
    	    self.generatePopulation(novo.right, 0)
 	    self.population.append(novo)
-	    print "----INSERINDO:", novo.value
+	    #print "----INSERINDO:", novo.value
 	    
 	    del(novo)
 
@@ -108,7 +108,7 @@ class GeneticProgramming:
 	- Executa Mutacoes
 	
 	"""
-	print "---- GET NEXT GEN"
+	#print "---- GET NEXT GEN"
 	minhaPopulacao = copy.deepcopy(self.population);
 	
 	parent1 = genetic_operators.getParentByTournament(minhaPopulacao, self.tournamentSize)
@@ -119,18 +119,33 @@ class GeneticProgramming:
 	children = genetic_operators.executeCrossover(parent1, parent2, self.crossoverProbability)
 	minhaPopulacao.append(children[0])
 	minhaPopulacao.append(children[1])
+        minhaPopulacao.append(parent1)
+
+        #matem a mesmo tamanho de populacao
+	minhaPopulacao.sort(key=lambda parent:parent.fitness)
+	minhaPopulacao.reverse()
+	minhaPopulacao.pop(0)
+	minhaPopulacao.pop(0)
 
 	#genetic_operators.????? ELITISMO ???????
 
-	individual = minhaPopulacao[randint(0,len(minhaPopulacao))]
+	aux = randint(0,len(minhaPopulacao)-1)
+	#print ">>", aux, len(minhaPopulacao)
+	individual = minhaPopulacao[aux]
 	children = genetic_operators.executeMutation(individual, self.functions, self.terminals, self.mutationPercentage)
-	print children.value
+	#print children.value
 	minhaPopulacao.append( children )
-	print "---- FIM GET NEXT GEN"
+	#print "---- FIM GET NEXT GEN"
+
+	#matem a mesmo tamanho de populacao
+	minhaPopulacao.sort(key=lambda parent:parent.fitness)
+	minhaPopulacao.reverse()
+	minhaPopulacao.pop(0)
+
 	return minhaPopulacao;
 
     def run(self):
-	print "-----RUN"
+	#print "-----RUN"
         """
         Executes the genetic program.
         :return: the best individual (solution) found to the problem.
@@ -141,7 +156,7 @@ class GeneticProgramming:
 	best = utils.Tree()
 
         while(numGenerations < self.maxGenerations):
-	    print "-----GERACAO:", numGenerations
+	    #print "-----GERACAO:", numGenerations
             if(numGenerations == 0):
 		self.generateInitialPopulation();
             else:
@@ -152,7 +167,7 @@ class GeneticProgramming:
             
                 current.fitness = utils.calculateFitness(current);
             	
-                if best.fitness < current.fitness:
+                if best.fitness > current.fitness:
                     best = current;
             
             #Finally...
@@ -162,46 +177,45 @@ class GeneticProgramming:
 
 
 
-def MeuTest():
+'''def MeuTest():
     populationSize = 100;
     maxGenerations = 100;
 
     gp = GeneticProgramming(populationSize, maxGenerations);
 
     novo = utils.Tree()
-    print gp.maxGenerations
+    #print gp.maxGenerations
     gp.generatePopulation(novo, 0)
     gp.population.append(novo)
-    print "----INSERINDO:", novo.value
+    #print "----INSERINDO:", novo.value
 
     novo = utils.Tree()
-    print gp.maxGenerations
+    #print gp.maxGenerations
     gp.generatePopulation(novo, 0)
     gp.population.append(novo)
-    print "----INSERINDO:", novo.value
+    #print "----INSERINDO:", novo.value
 
     novo = utils.Tree()
-    print gp.maxGenerations
+    #print gp.maxGenerations
     gp.generatePopulation(novo, 0)
     gp.population.append(novo)
-    print "----INSERINDO:", novo.value
+    #print "----INSERINDO:", novo.value
 
     novo = utils.Tree()
-    print gp.maxGenerations
+    #print gp.maxGenerations
     gp.generatePopulation(novo, 0)
     gp.population.append(novo)
-    print "----INSERINDO:", novo.value
+    #print "----INSERINDO:", novo.value
     for current in gp.population:       
 	current.fitness = utils.calculateFitness(current);
 
     for current in gp.population:       
-	print "f", current.fitness
+	#print "f", current.fitness
 
-    genetic_operators.getParentByTournament(gp.population, 2)
+    #genetic_operators.getParentByTournament(gp.population, 2)
 
     #genetic_operators.executeCrossover(gp.population[0], gp.population[1], 101)
 
-
-
 if __name__ == "__main__" :
     MeuTest()
+'''
