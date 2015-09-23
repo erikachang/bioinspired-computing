@@ -19,7 +19,7 @@ def getParentByTournament(population, tournamentSize):
     # return the individual with the lower fitness
     return (tournamentPopulation[0], tournamentPopulation[1])
 
-def itens(tree):
+def items(tree):
     # return the total items of a tree
 
     if tree == None :
@@ -27,9 +27,9 @@ def itens(tree):
 
     total = 1
 
-    total += itens(tree.left)
+    total += items(tree.left)
 
-    total += itens(tree.right)
+    total += items(tree.right)
 
     return total
 
@@ -54,7 +54,7 @@ def navigate(tree, size):
         return right
 
     return (None, right[1])
-         
+     
 def elitism(population, rate):
     # return a set with the k best individuals from population
 
