@@ -68,7 +68,7 @@ class GeneticProgramming:
 	    tree.value = self.terminals[randint(0,2)]
 	    #print "treeVAlE", tree.value
 	    return
-	if randint(0,3) <  1:
+	if randint(0,1) <  1:
 	    tree.value = self.terminals[randint(0,2)]
 	    #print "treeVAlD", tree.value
 	    return
@@ -87,17 +87,16 @@ class GeneticProgramming:
         Generates the initial population of the evolution
         """
         # Codigo para geracao da populacao inicial
-	for x in range(0,100):
+	for x in range(self.populationSize):
   	    novo = utils.Tree()
 	    novo.left = utils.Tree()
-	    novo.right = utils.Tree()
-	    novo.value = self.functions[randint(0,2)]
-   	    self.generatePopulation(novo.left, 1)
-   	    self.generatePopulation(novo.right, 0)
-	    self.population.append(novo)
-	    #print "----INSERINDO:", novo.value
-	    
-	    del(novo)
+            novo.right = utils.Tree()
+            novo.value = self.functions[randint(0,2)]
+            self.generatePopulation(novo.left, 1)
+            self.generatePopulation(novo.right, 0)
+            self.population.append(novo)
+            #print "----INSERINDO:", novo.value
+            del(novo)
 
     def getNextGeneration(self):
 	"""
@@ -108,41 +107,54 @@ class GeneticProgramming:
 	- Executa Mutacoes
 	
 	"""
+
 	#print "---- GET NEXT GEN"
-	minhaPopulacao = copy.deepcopy(self.population);
+
+
+    	#ELETISMO
+    	nextPopulation = genetic_operators.executeEletismo(self.population, self.elitismPercentage)
+        
+    	#MUTACAO
+	eliteSize = self.elitismPercentage*self.populationSize
+        for x in range(int(self.mutationPercentage*len(self.population))):
+            
+            aux = randint(eliteSize,len(self.population)-1)
+            #print ">>", aux, len(minhaPopulacao)
+            individual = self.population[aux]
+            self.population.pop(self.population.index(individual))
+
+            children = genetic_operators.executeMutation(individual, self.functions, self.terminals, self.mutationProbability)
+	    #print children.value
+	    nextPopulation.append( children )
 	
-	parent1 = genetic_operators.getParentByTournament(minhaPopulacao, self.tournamentSize)
-
-	minhaPopulacao.pop(minhaPopulacao.index(parent1))
-
-	parent2 = genetic_operators.getParentByTournament(minhaPopulacao, self.tournamentSize)
-	children = genetic_operators.executeCrossover(parent1, parent2, self.crossoverProbability)
-	minhaPopulacao.append(children[0])
-	minhaPopulacao.append(children[1])
-        minhaPopulacao.append(parent1)
+    	#CROSS
+	#minhaPopulacao = copy.deepcopy(self.population);
+	for x in range(int(len(nextPopulation)-self.populationSize)):
+	
+		parentTupla = genetic_operators.getParentByTournament(self.population, self.tournamentSize)
+		children = genetic_operators.executeCrossover(parentTupla[0], parentTupla[1], self.crossoverProbability)
+		nextPopulation.append(children[0])
+		nextPopulation.append(children[1])
 
         #matem a mesmo tamanho de populacao
-	minhaPopulacao.sort(key=lambda parent:parent.fitness)
+	'''minhaPopulacao.sort(key=lambda parent:parent.fitness)
 	minhaPopulacao.reverse()
 	minhaPopulacao.pop(0)
-	minhaPopulacao.pop(0)
+	minhaPopulacao.pop(0)'''
 
 	#genetic_operators.????? ELITISMO ???????
+    
+	    #print "---- FIM GET NEXT GEN"
 
-	aux = randint(0,len(minhaPopulacao)-1)
-	#print ">>", aux, len(minhaPopulacao)
-	individual = minhaPopulacao[aux]
-	children = genetic_operators.executeMutation(individual, self.functions, self.terminals, self.mutationPercentage)
-	#print children.value
-	minhaPopulacao.append( children )
-	#print "---- FIM GET NEXT GEN"
+        
+
 
 	#matem a mesmo tamanho de populacao
-	minhaPopulacao.sort(key=lambda parent:parent.fitness)
+	'''minhaPopulacao.sort(key=lambda parent:parent.fitness)
 	minhaPopulacao.reverse()
-	minhaPopulacao.pop(0)
+	minhaPopulacao.pop(0)'''
 
-	return minhaPopulacao;
+	return nextPopulation;
 
     def run(self):
 	#print "-----RUN"
@@ -167,12 +179,17 @@ class GeneticProgramming:
             
                 current.fitness = utils.calculateFitness(current);
             	
+		print "Fitness curr:", current.fitness, "best:", best.fitness
                 if best.fitness > current.fitness:
                     best = current;
-            
+                elif best.fitness == current.fitness :
+                    if utils.Tree.getTreeSize_rec(best) > utils.Tree.getTreeSize_rec(current):
+                        best = current
             #Finally...
             numGenerations += 1;
         
+	best.printable()
+
 	return best;
 
 

@@ -6,6 +6,7 @@ when evaluating the level vector.
 
 from enum import Enum
 import sys
+import copy
 
 level = ['P','P','P','H','H','P','P','P','H','P','P','P','P','H','P','P','E','E','P','P'];	
 
@@ -120,9 +121,8 @@ def calculateFitness(tree):
     root = tree;
 	
 	#Iterate on Level
-    currentLevel = level;
-	
-    for step in currentLevel:
+    currentLevel = copy.deepcopy(level);
+    for step in range(len(currentLevel)):
 	
 		#Reset Iteration
         currentTree = root;
@@ -160,31 +160,34 @@ def calculateFitness(tree):
                             currentTree = currentTree.right;
 
 	#print "---FIM DA LOCURA DO RAFA"
+        #print "currentLevel[step]:", currentLevel[step]
         #Certamente aqui tem um Terminals
-        if (step == LevelPositionTypes.plain.value):
-            if (currentTree.value == Moves.right or currentTree.value == Moves.jump):
+        if (currentLevel[step] == LevelPositionTypes.plain.value):
+            if (currentTree.value == Moves.right.value or currentTree.value == Moves.jump.value):
                 positionReached = positionReached + 1;
-        else:
-            if (step == LevelPositionTypes.hole.value):
-                if (currentTree.value == Moves.jump):
-                    positionReached = positionReached + 1;
-                else:
-                    if (currentTree.value == Moves.right):
-                        break; #Dies
+        elif (currentLevel[step] == LevelPositionTypes.hole.value):
+            if (currentTree.value == Moves.jump.value):
+                positionReached = positionReached + 1;
+            elif (currentTree.value == Moves.right.value):
+                #print "Dies"
+                break; #Dies
+        elif (currentLevel[step] == LevelPositionTypes.enemy.value):
+            if (currentTree.value == Moves.jump.value):
+                positionReached = positionReached + 1;
+            elif (currentTree.value == Moves.fire.value):
+                #print ">>>>>> currentLevel[step]:", currentLevel[step], "positionReached", positionReached
+                currentLevel[step] = LevelPositionTypes.plain.value;
             else:
-                if (step == LevelPositionTypes.enemy.value):
-                    if (currentTree.value == Moves.jump):
-                        positionReached = positionReached + 1;
-                    else:
-                        if (currentTree.value == Moves.fire):
-                            currentLevel[positionReached] = LevelPositionTypes.plain.value;
-                        else:
-                            break; #Dies
+                #print "Dies"
+                break; #Dies
 
     # Digite aqui sua funcao de fitness
-    levelSize = len(level) - 1;
+    levelSize = len(level);
+    treeSize = Tree.getTreeSize_rec(root)
+
+    print "PR:", positionReached, "TreeSize:", treeSize
 	
-    fitness = (levelSize - positionReached + 1) * (levelSize) * (Tree.getTreeSize_rec(root));
+    fitness = float(levelSize - positionReached) + (float(treeSize) / float(100));
 	
     """
     RAFAEL: 

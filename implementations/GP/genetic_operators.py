@@ -16,7 +16,7 @@ def getParentByTournament(population, tournamentSize):
     tournamentPopulation.sort(key=lambda parent:parent.fitness)
 
     #retorna o de menor fitness
-    return tournamentPopulation[0];
+    return (tournamentPopulation[0], tournamentPopulation[1]);
 
 def itens(tree):
     if tree == None :
@@ -51,8 +51,14 @@ def navega(tree, size) :
     
 
      
+def executeEletismo(population, rate):
+    #newPopulation = population
 
-def executeCrossover(parent1, parent2, taxaCross):
+    population.sort(key=lambda parent:parent.fitness)
+    
+    return population[:int(rate*len(population))]
+
+def executeCrossover(parent1, parent2, rate):
     """
     Executes crossover between two parents
 
@@ -66,7 +72,7 @@ def executeCrossover(parent1, parent2, taxaCross):
 
     #Digite aqui o codigo para a realizacao do crossover
     # define um sorteio entre 0 e 100 para se fazer a medicao da taxa de CROSS
-    boolTaxa = randint(0, 100)
+    boolRate = randint(0, 100)
 
     boolTroca = False
 
@@ -74,7 +80,7 @@ def executeCrossover(parent1, parent2, taxaCross):
     #child2.printable()
 
     #medicao da taxa de cross
-    if boolTaxa < taxaCross :
+    if boolRate < rate :
 	
 	#inicializa variaveis
 	parent1Elem = itens(parent1)

@@ -18,6 +18,6 @@ if __name__ == "__main__":
     bestIndividual = gp.run();
 
     print "Return Individual"
-    print "Fitness %i" % bestIndividual.fitness;
+    print "Fitness", bestIndividual.fitness;
     print bestIndividual;
 
