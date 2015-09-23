@@ -176,11 +176,6 @@ class GeneticProgramming:
                 # get the best fitness, which is the lower one
                 if best.fitness > current.fitness:
                     best = current
-                # if fitness is the same, compare the sizes of the trees
-                # get the smaller one
-                elif best.fitness == current.fitness :
-                    if utils.Tree.getTreeSize(best) > utils.Tree.getTreeSize(current):
-                        best = current
 
             numGenerations += 1
         
