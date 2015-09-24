@@ -9,7 +9,7 @@ import utils
 
 if __name__ == "__main__":
 
-    populationSize = 1000;
+    populationSize = 100;
     maxGenerations = 100;
 
     gp = GeneticProgramming(populationSize, maxGenerations);
