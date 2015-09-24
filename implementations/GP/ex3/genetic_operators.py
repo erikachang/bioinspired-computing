@@ -7,28 +7,28 @@ def getParentByTournament(population, tournamentSize):
     # return two winners
 
     tournamentPopulation = []
-    
+    populationSize = len(population)
+    poolSize = 0
     # get individuals randomly according to tournamentSize
-    for x in range(tournamentSize):
-        randParent = randint(0, len(population)-1)
-        tournamentPopulation.append(population[randParent])
-    
+    while poolSize < tournamentSize:
+        candidate = population[randint(0, populationSize-1)]
+        if candidate not in tournamentPopulation:
+            tournamentPopulation.append(candidate)
+            poolSize += 1
+        
     # sort individuals by fitness
     tournamentPopulation.sort(key=lambda parent:parent.fitness)
-
-    # return the individual with the lower fitness
+    # return the individuals with lowest fitness
     return (tournamentPopulation[0], tournamentPopulation[1])
 
 def items(tree):
     # return the total items of a tree
 
-    if tree == None :
+    if tree is None:
         return 0
 
     total = 1
-
     total += items(tree.left)
-
     total += items(tree.right)
 
     return total
@@ -37,7 +37,7 @@ def navigate(tree, size):
     # navigate through the tree until size
     # return the tree from size 
 
-    if tree == None :
+    if tree is None :
        return (None, size)
 
     if size-1 == 0 :
@@ -45,12 +45,12 @@ def navigate(tree, size):
 
     left = navigate(tree.left, size-1)
     
-    if left[0] != None :
+    if left[0] is not None:
        return left
 
     right = navigate(tree.right, left[1])
     
-    if right[0] != None : 
+    if right[0] is not None:
         return right
 
     return (None, right[1])
@@ -75,7 +75,6 @@ def crossover(parent1, parent2, rate):
     child1 = copy.deepcopy(parent1)
     child2 = copy.deepcopy(parent2)
 
-    
     boolRate = randint(0, 100)
 
     # measure the crossover rate
@@ -83,36 +82,28 @@ def crossover(parent1, parent2, rate):
         
         # initialize parents for crossover
         parent1Elem = items(parent1)
-
         parent2Elem = items(parent2)
 
         randParent1 = randint(0, parent1Elem/2-1)
-
         randParent2 = randint(0, parent2Elem/2-1)
 
         # original
         p1 = navigate(parent1, randParent1*2+1)
-
         p2 = navigate(parent2, randParent2*2+1)
 
         # copy
         c1 = navigate(child1, randParent1*2+1)
-        
         c2 = navigate(child2, randParent2*2+1)
-
+    
         # transfer
         c1[0].left = copy.deepcopy(p2[0].left)
-
         c1[0].right = copy.deepcopy(p2[0].right)
-
         c1[0].value = p2[0].value
-
+    
         c2[0].left = copy.deepcopy(p1[0].left)
-
         c2[0].right = copy.deepcopy(p1[0].right)
-
         c2[0].value = p1[0].value
-
+        
     return child1, child2
 
 
@@ -128,7 +119,7 @@ def mutation(individual, functions, terminals, mutationProbability):
 
     newIndividual = copy.deepcopy(individual)
 
-    while randint(0,100) < mutationProbability :
+    while randint(0,100) < mutationProbability:
         # get elements from individual
         indElem = items(newIndividual)
         # get a random element

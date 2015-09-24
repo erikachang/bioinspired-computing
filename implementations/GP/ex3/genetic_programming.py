@@ -6,11 +6,11 @@ contains genetic operators (such as crossover and
 mutation).
 """
 
-import random;
-import genetic_operators;
-from tree import Tree;
+import random
+import genetic_operators as gop
+from tree import Tree
 from random import randint
-import utils;
+import utils
 
 class GeneticProgramming:
 
@@ -97,54 +97,45 @@ class GeneticProgramming:
             self.generatePopulation(new.left, 1)
             self.generatePopulation(new.right, 0)
             self.population.append(new)
-            
-            del(new)
 
+            
     def getNextGeneration(self):
         """
         Generates Next Generation 
         
-        - Executa CrossOver
         - Executa Elitismo
+        - Executa CrossOver
         - Executa Mutacoes
         
         """
 
         # elitism 
         # create the set that will be part of the next generation
-        nextPopulation = genetic_operators.elitism(self.population, self.elitismPercentage)
+        nextPopulation = gop.elitism(self.population, self.elitismPercentage)
         
         # get the size of the elite set
         eliteSize = len(nextPopulation)
 
+        while (len(nextPopulation) < len(self.population)):
 
-        # crossover    
-        # iterate over the the elite set (next generation)
-        for x in range(int(eliteSize - self.populationSize)):        
-            # tournament to select parents
-            parentTuple = genetic_operators.getParentByTournament(self.population, self.tournamentSize)
-            children = genetic_operators.crossover(parentTuple[0], parentTuple[1], self.crossoverProbability)
-            # add children to the next generation
-            nextPopulation.append(children[0])
-            nextPopulation.append(children[1])
+            if randint(0, 100) < (self.crossoverProbability * 100):
+                parentTuple = gop.getParentByTournament(self.population, self.tournamentSize)
+                children = gop.crossover(parentTuple[0], parentTuple[1], self.crossoverProbability)
+                # add children to the next generation
+                nextPopulation.append(children[0])
+                nextPopulation.append(children[1])            
         
-        
-        # mutation
-        # calculate how many individuals will be mutated
-        for x in range(int(self.mutationPercentage*len(self.population))):
-            
-            #get a random individual
-            # aux = randint(eliteSize,len(self.population)-1)
-            aux = randint(0, len(self.population) - 1)
-            
-            individual = self.population[aux]
-            self.population.pop(self.population.index(individual))
+            if randint(0, 100) < (self.mutationProbability * 100):
+                # 'aux' is the nastiest...! Please refrain from using these meaningless names!!!
+                # computes a random index
+                index = randint(0, len(self.population) - 1)
+                individual = self.population[index]
 
-            children = genetic_operators.mutation(individual, self.functions, self.terminals, self.mutationProbability)
+                self.population.pop(self.population.index(individual))
+                children = gop.mutation(individual, self.functions, self.terminals, self.mutationProbability)
             
-            # add the mutated individual to the next generation set
-            nextPopulation.append(children)
-
+                # add the mutated individual to the next generation set
+                nextPopulation.append(children)
 
         return nextPopulation
 
@@ -159,22 +150,19 @@ class GeneticProgramming:
 		# best individual    
         best = Tree()
 
+        self.generateInitialPopulation();
+        
         while(numGenerations < self.maxGenerations):
-
-        	# if it is the first generation, create new population
-            if(numGenerations == 0):
-                self.generateInitialPopulation();
-            else:
-                self.population = self.getNextGeneration();
 
             # calculate fitness to all individuals in population
             for current in self.population:
                 current.fitness = utils.calculateFitness(current);
 
-                # get the best fitness, which is the lower one
-                if best.fitness > current.fitness:
+                # get the best fitness, which is the lowest one
+                if current.fitness < best.fitness:
                     best = current;
-                    
+
+            self.population = self.getNextGeneration();
             numGenerations += 1;
 
         return best;

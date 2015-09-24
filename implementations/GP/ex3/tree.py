@@ -18,11 +18,11 @@ class Tree():
         left = 0
         right = 0
         
-        # iterate recursively through the tree
-        if (tree.left != None):
+        # recurse through the tree
+        if (tree.left is not None):
             left = Tree.getTreeSize(tree.left)
             
-        if (tree.right != None):
+        if (tree.right is not None):
             right = Tree.getTreeSize(tree.right)
 
         return left + right + 1
