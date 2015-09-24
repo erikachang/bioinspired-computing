@@ -115,14 +115,27 @@ class GeneticProgramming:
         nextPopulation = genetic_operators.elitism(self.population, self.elitismPercentage)
         
         # get the size of the elite set
-        eliteSize = self.elitismPercentage*self.populationSize
+        eliteSize = len(nextPopulation)
 
+
+        # crossover    
+        # iterate over the the elite set (next generation)
+        for x in range(int(eliteSize - self.populationSize)):        
+            # tournament to select parents
+            parentTuple = genetic_operators.getParentByTournament(self.population, self.tournamentSize)
+            children = genetic_operators.crossover(parentTuple[0], parentTuple[1], self.crossoverProbability)
+            # add children to the next generation
+            nextPopulation.append(children[0])
+            nextPopulation.append(children[1])
+        
+        
         # mutation
         # calculate how many individuals will be mutated
         for x in range(int(self.mutationPercentage*len(self.population))):
             
             #get a random individual
-            aux = randint(eliteSize,len(self.population)-1)
+            # aux = randint(eliteSize,len(self.population)-1)
+            aux = randint(0, len(self.population) - 1)
             
             individual = self.population[aux]
             self.population.pop(self.population.index(individual))
@@ -131,16 +144,7 @@ class GeneticProgramming:
             
             # add the mutated individual to the next generation set
             nextPopulation.append(children)
-    
-        # crossover    
-        # iterate over the the elite set (next generation)
-        for x in range(int(len(nextPopulation)-self.populationSize)):        
-            # tournament to select parents
-            parentTuple = genetic_operators.getParentByTournament(self.population, self.tournamentSize)
-            children = genetic_operators.crossover(parentTuple[0], parentTuple[1], self.crossoverProbability)
-            # add children to the next generation
-            nextPopulation.append(children[0])
-            nextPopulation.append(children[1])
+
 
         return nextPopulation
 

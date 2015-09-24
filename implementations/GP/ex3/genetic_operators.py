@@ -82,9 +82,9 @@ def crossover(parent1, parent2, rate):
     if boolRate < rate :
         
         # initialize parents for crossover
-        parent1Elem = itens(parent1)
+        parent1Elem = items(parent1)
 
-        parent2Elem = itens(parent2)
+        parent2Elem = items(parent2)
 
         randParent1 = randint(0, parent1Elem/2-1)
 
@@ -130,7 +130,7 @@ def mutation(individual, functions, terminals, mutationProbability):
 
     while randint(0,100) < mutationProbability :
         # get elements from individual
-        indElem = itens(newIndividual)
+        indElem = items(newIndividual)
         # get a random element
         randInd = randint(1,indElem)
     
