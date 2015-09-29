@@ -1,5 +1,6 @@
 import requests
 import json
+from sets import Set
 
 movies = []
 FIXDB =  'fixedDataBase.txt'
@@ -12,6 +13,7 @@ def loadDB(file):
 		movies.append(test)
 	print('Database loaded!')
 	f.close()
+
 def saveDB(file):
 	f = open(file,'w')
 	for movie in movies:
@@ -19,6 +21,11 @@ def saveDB(file):
 		f.write("\n")
 	f.close()
 	print('Saved!')
+
+def countGenres(listMovies):
+	genreMap = dict()
+	for movie in listMovies:
+		print movie['Genre']
 
 def main():
 	while True:
