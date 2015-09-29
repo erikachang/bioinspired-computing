@@ -1,10 +1,12 @@
 import requests
 import json
 from sets import Set
+import operator
+
 
 movies = []
 FIXDB =  'fixedDataBase.txt'
-DB =  'movieListJson.txt'
+
 
 def loadDB(file):
 	f = open(file, 'r')
@@ -25,9 +27,64 @@ def saveDB(file):
 def countGenres(listMovies):
 	genreMap = dict()
 	for movie in listMovies:
-		print movie['Genre']
+		genreString = movie['Genre']
+		genres = genreString.split(',')
+		for genre in genres:
+			genre = genre.strip()
+			if(genreMap.has_key(genre)):
+				genreMap[genre] = genreMap[genre] + 1.0/len(listMovies)
+			else:
+				genreMap[genre] = 1.0/len(listMovies)
+	return genreMap
+
+def countActors(listMovies):
+	actorMap = dict()
+	for movie in listMovies:
+		actorsString = movie['Actors']
+		actors = actorsString.split(',')
+		i = 0;
+		for actor in actors:
+			if(i > 5): break
+			actor = actor.strip()
+			if(actorMap.has_key(actor)):
+				actorMap[actor] = actorMap[actor] + 1.0/len(listMovies)
+			else:
+				actorMap[actor] = 1.0/len(listMovies)
+			i = i +1
+
+	return actorMap
+
+def countDirectors(listMovies):
+	directorMap = dict()
+	for movie in listMovies:
+		directorsString = movie['Director']
+		directors = directorsString.split(',')
+		i = 0;
+		for director in directors:
+			if(i > 5): break
+			director = director.strip()
+			if(directorMap.has_key(director)):
+				directorMap[director] = directorMap[director] + 1.0/len(listMovies)
+			else:
+				directorMap[director] = 1.0/len(listMovies)
+			i = i +1
+
+	return directorMap
+
+def printOrdernedMap(map):
+	sorted_x = sorted(map.items(), key=operator.itemgetter(1))
+	for k, v in sorted_x:
+		print k, v
+
+def printMap(map):
+	for k, v in map.iteritems():
+		print k, v
+
+def checkMovie(movie):
+	print 'test'
 
 def main():
+	DB =  'movieListJson.txt'
 	while True:
 			print('---')
 			print('Welcome to MovieDB:')
@@ -37,6 +94,7 @@ def main():
 			print('(3) - Print all movies in DB')
 			print('(4) - Load from fixed database (cannot be written) (file: '+FIXDB +')')
 			print('(5) - Change file to load')
+			print('(6) - Print statistics about the database')
 			print('(0) - Exit')
 			option = raw_input('Your choice: ')
 			if option == '1':
@@ -57,7 +115,7 @@ def main():
 			    			movies.append(r.json())
 			    			print('Only saved on memory, select option 1 to reset Memory')
 			    		else:
-			    			print('Movie discarted')
+			    			print('Movie discarded')
 			    else: 
 			    	print('Movie not found :(')
 			elif option == '3':
@@ -65,6 +123,17 @@ def main():
 					print movie['Title']
 			elif option == '4':
 				loadDB(FIXDB)
+			elif option == '5':
+				DB =  raw_input('File: ')
+			elif option == '6':
+				genreMap = countGenres(movies)
+				actorsMap = countActors(movies)
+				directorsMap = countDirectors(movies)
+				printOrdernedMap(genreMap)
+				print '============'
+				printOrdernedMap(actorsMap)
+				print '============'
+				printOrdernedMap(directorsMap)
 			elif option == '0':
 				break
 			else:
