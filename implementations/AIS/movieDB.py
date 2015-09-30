@@ -138,4 +138,3 @@ def main():
 				break
 			else:
 				print 'Option unrecognized. Please try again.'
-main()
