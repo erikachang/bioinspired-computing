@@ -7,6 +7,8 @@ import operator
 movies = []
 FIXDB =  'fixedDataBase.txt'
 
+def getGenreList():
+	return countGenres(movies).keys()
 
 def loadDB(file):
 	f = open(file, 'r')
@@ -71,7 +73,7 @@ def countDirectors(listMovies):
 
 	return directorMap
 
-def printOrdernedMap(map):
+def printOrderedMap(map):
 	sorted_x = sorted(map.items(), key=operator.itemgetter(1))
 	for k, v in sorted_x:
 		print k, v
@@ -129,11 +131,11 @@ def main():
 				genreMap = countGenres(movies)
 				actorsMap = countActors(movies)
 				directorsMap = countDirectors(movies)
-				printOrdernedMap(genreMap)
+				printOrderedMap(genreMap)
 				print '============'
-				printOrdernedMap(actorsMap)
+				printOrderedMap(actorsMap)
 				print '============'
-				printOrdernedMap(directorsMap)
+				printOrderedMap(directorsMap)
 			elif option == '0':
 				break
 			else:
