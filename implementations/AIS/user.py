@@ -6,7 +6,7 @@ class User():
 	movieRatings = []
 	biasList = []
 	name = ''
-
+	concentration = 10.0
 	def getMovieList(self):
 		movieList = []
 		for m in self.movieRatings:

@@ -1,6 +1,7 @@
 import user as u
 import movieDB as mdb
 import random
+import math
 from sets import Set
 from operator import itemgetter, attrgetter, methodcaller
 
@@ -8,12 +9,50 @@ from operator import itemgetter, attrgetter, methodcaller
 #not used yet
 dList = []
 
+STIMULATION_RATIO = 0.5
+SUPPRESION_RATIO = 0.3
+DEATH_RATIO = 0.3
+NEIGHBOURS_MAX = 10
+
 def main():
 	mdb.loadDB(mdb.FIXDB)
 	users = generateRandomUsers(1500,150)
-	neighbors = findNeighbors(users, users[0], 10)
-	print neighbors
+	executeAIS(users[0],users)
 
+def executeAIS(antigen, users):
+	neighbors = findNeighbors(users, antigen, len(users) - 1)
+	stable = 0
+	antibodies = []
+	iterations = 0;
+	while stable < 10:
+		index = random.randrange(len(neighbors))
+		
+		nAb = neighbors.pop(index)
+		antibodies.append(nAb[0])
+		lastAbSize =  len(antibodies)
+		stable = 0
+		iterations += 1
+		print iterations
+		while stable < 10 & NEIGHBOURS_MAX <= len(antibodies):
+			removeList = []
+			for ab in antibodies:
+				agStimulation = STIMULATION_RATIO * abs(compare(antigen,ab)) * antigen.concentration * ab.concentration
+				deathRate = DEATH_RATIO * ab.concentration
+				abSupression = 0
+				for abody in antibodies:
+					if abody == ab:
+						continue
+					abSupression = abSupression + ( abs(compare(ab,abody)) * ab.concentration * abody.concentration)
+				abSupression = (SUPPRESION_RATIO/len(antibodies)) * abSupression
+				print agStimulation
+				ab.concentration = agStimulation + abSupression - deathRate
+				if ab.concentration < 21:
+					removeList.append(ab)
+			for rm in removeList:
+				antibodies.remove(rm)
+			stable += 1
+	for ab in antibodies:
+		print ab.name +' ' + str(compare(ab,antigen)) + ' ' + str(ab.concentration)
 #find k closest neighbors for mainUser in the list users
 def findNeighbors(users, mainUser, k):
 	distances = []
@@ -107,13 +146,13 @@ def compare(user1,user2):
 			overlappedGenres.append(genre1)
 	sum1 = 0.0
 	for genre in overlappedGenres:
-		sum1 = sum1 + ( (u1GenreRate[genre] - averageOfVector(u1GenreRate.values())) * (u2GenreRate[genre] - averageOfVector(u2GenreRate.values())) )
+		sum1 += ( (u1GenreRate[genre] - averageOfVector(u1GenreRate.values())) * (u2GenreRate[genre] - averageOfVector(u2GenreRate.values())) )
 	sum2 = 0.0
 	for genre in overlappedGenres:
-		sum2 = sum2 + pow(( (u1GenreRate[genre] - averageOfVector(u1GenreRate.values()))),2)
+		sum2 += pow(( (u1GenreRate[genre] - averageOfVector(u1GenreRate.values()))),2)
 	sum3 = 0.0
 	for genre in overlappedGenres:
-		sum3 = sum3 + pow(( (u2GenreRate[genre] - averageOfVector(u2GenreRate.values()))),2)
+		sum3 += pow(( (u2GenreRate[genre] - averageOfVector(u2GenreRate.values()))),2)
 	pearson = sum1/pow((sum3*sum2),0.5)
 	return pearson
 
