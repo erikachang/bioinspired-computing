@@ -26,7 +26,6 @@ def executeAIS(antigen, users):
 	iterations = 0;
 	while stable < 10:
 		index = random.randrange(len(neighbors))
-		
 		nAb = neighbors.pop(index)
 		antibodies.append(nAb[0])
 		lastAbSize =  len(antibodies)
