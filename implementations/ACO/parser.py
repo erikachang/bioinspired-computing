@@ -1,5 +1,8 @@
+#!/usr/bin/env python
 import city as c
 import connection as cn
+import networkx as nx
+import matplotlib.pyplot as plt
 
 def parse(file):
 	f = open(file, 'r')
@@ -39,8 +42,19 @@ def parse(file):
 		for cnn in connectionList:
 			if cnn.a == ct:
 				ct.connections.append(cnn)
+	G = convertToNetworkx(cityList, connectionList)
+	return cityList, connectionList, G
 
-	return cityList, connectionList
+def convertToNetworkx(cList, cnList):
+	G = nx.Graph()
+#	G.add_edge(cList[0].cId,cList[1].cId,object= cnList[0])
+	for city in cList:
+		G.add_node(city.cId, x=city.x, y=city.y, concentration= city.concentration)
+		#G[city.cId]['x'] = 'test'
+	for conn in cnList:
+		G.add_edge(conn.a.cId, conn.b.cId, object=conn)
+	return G
+
 
 # x and y are vectors of the same size
 def euclidean(c1,c2):
@@ -51,7 +65,9 @@ def euclidean(c1,c2):
 		sumSq+=(x[i]-y[i])**2
 	return (sumSq**0.5)
 
-cList, cnList = parse('cenario_10.txt')
+cList, cnList, G = parse('cenario_10.txt')
 print  cList
 print '\n=========\n'
 print cnList
+#nx.draw(G)
+#plt.show()
