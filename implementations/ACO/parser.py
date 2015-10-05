@@ -65,9 +65,9 @@ def euclidean(c1,c2):
 		sumSq+=(x[i]-y[i])**2
 	return (sumSq**0.5)
 
-cList, cnList, G = parse('cenario_10.txt')
-print  cList
-print '\n=========\n'
-print cnList
+#cList, cnList, G = parse('cenario_10.txt')
+#print  cList
+#print '\n=========\n'
+#print cnList
 #nx.draw(G)
 #plt.show()
