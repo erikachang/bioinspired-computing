@@ -36,7 +36,7 @@ class Aco():
                 while currentState != DESTINATION_CITY:
                     action = self.getAction(j, currentState)
                     edgesVisited.append(action)
-                    currentState = action.b.cId
+                    currentState = action.destination.cId
                 #calculate pheronome distribution
                 antEdgeList.append(edgesVisited)
                 print edgesVisited

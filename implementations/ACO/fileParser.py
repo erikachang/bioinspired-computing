@@ -30,7 +30,7 @@ def parseFile(file):
     #populate connection in cities
     for city in cityList:
         for connection in connectionList:
-            if connection.a is city:
+            if connection.origin is city:
                 city.addConnection(connection)
                 
     G = convertToNetworkx(cityList, connectionList)
@@ -43,7 +43,7 @@ def convertToNetworkx(cList, cnList):
         G.add_node(city.cId, x = city.x, y = city.y, concentration = city.concentration)
         #G[city.cId]['x'] = 'test'
     for connection in cnList:
-        G.add_edge(connection.a.cId, connection.b.cId, object = connection)
+        G.add_edge(connection.origin.cId, connection.destination.cId, object = connection)
     return G
 
 #cList, cnList, G = parseFile('cenario_10.txt')

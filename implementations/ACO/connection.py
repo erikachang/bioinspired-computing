@@ -1,16 +1,15 @@
 import city as c
 
 class Connection():
-    #enclidean distance
     concentration = 0
 
     def __init__(self, origin, destination):
-        self.a = origin
-        self.b = destination
-        self.size = self._euclidean(self.a, self.b)
+        self.origin = origin
+        self.destination = destination
+        self.size = self._euclidean(self.origin, self.destination)
 
     def __repr__(self):
-        s = 'cA: ' + str(self.a.cId) +' cB: ' +  str(self.b.cId) + ' size: ' +str(self.size) 
+        s = 'cA: ' + str(self.origin.cId) + ' cB: ' +  str(self.destination.cId) + ' size: ' + str(self.size) 
         return s
 
     # x and y are vectors of the same size
