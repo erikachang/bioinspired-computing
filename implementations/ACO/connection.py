@@ -1,7 +1,7 @@
 import city as c
 
 class Connection():
-    concentration = 0
+    concentration = 1
 
     def __init__(self, origin, destination):
         self.origin = origin
@@ -9,7 +9,7 @@ class Connection():
         self.size = self._euclidean(self.origin, self.destination)
 
     def __repr__(self):
-        s = 'cA: ' + str(self.origin.cId) + ' cB: ' +  str(self.destination.cId) + ' size: ' + str(self.size) 
+        s = str(self.origin.cId) + '|' +  str(self.destination.cId) 
         return s
 
     # x and y are vectors of the same size
