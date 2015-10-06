@@ -2,70 +2,49 @@
 import city as c
 import connection as cn
 import networkx as nx
-#import matplotlib.pyplot as plt
 
 def parseFile(file):
-	f = open(file, 'r')
-	cId = 0
-	cityList = []
-	connectionList = []
-	connectionParse = False
-	for line in f:
-		if line in ['\n', '\r\n']:
-			connectionParse = True
-			continue
-		if connectionParse:
-			splitted = line.split('|')
-			con = cn.Connection()
-			con.a = cityList[int(splitted[0])]
-			con.b = cityList[int(splitted[1])]
-			con.size = euclidean(con.a,con.b)
-			connectionList.append(con)
-			
-			#connection both ways
-			con = cn.Connection()
-			con.a = cityList[int(splitted[1])]
-			con.b = cityList[int(splitted[0])]
-			con.size = euclidean(con.a,con.b)
-			connectionList.append(con)
- 		else:
-			splitted = line.split('|')
-			city = c.City()
-			city.x = int(splitted[0])
-			city.y = int(splitted[1])
-			city.cId = cId
-			cityList.append(city)
-			cId += 1
-	#populate connection in cities
-	for ct in cityList:
-		ct.connections = []
-		for cnn in connectionList:
-			if cnn.a == ct:
-				ct.connections.append(cnn)
-	G = convertToNetworkx(cityList, connectionList)
-	return cityList, connectionList, G
+    f = open(file, 'r')
+    cId = 0
+    cityList = []
+    connectionList = []
+    connectionParse = False
+    
+    for line in f:
+        if line in ['\n', '\r\n']:
+            connectionParse = True
+            continue
+        if connectionParse:
+            splitted = line.split('|')
+            con = cn.Connection(cityList[int(splitted[0])], cityList[int(splitted[1])])
+            connectionList.append(con)
+            # connection both ways
+            con = cn.Connection(cityList[int(splitted[1])], cityList[int(splitted[0])])
+            connectionList.append(con)
+        else:
+            splitted = line.split('|')
+            city = c.City(cId, int(splitted[0]), int(splitted[1]))
+            cityList.append(city)
+            cId += 1
+            
+    #populate connection in cities
+    for city in cityList:
+        for connection in connectionList:
+            if connection.a is city:
+                city.addConnection(connection)
+                
+    G = convertToNetworkx(cityList, connectionList)
+    return cityList, connectionList, G
 
 def convertToNetworkx(cList, cnList):
-	G = nx.Graph()
-#	G.add_edge(cList[0].cId,cList[1].cId,object= cnList[0])
-	for city in cList:
-		G.add_node(city.cId, x=city.x, y=city.y, concentration= city.concentration)
-		#G[city.cId]['x'] = 'test'
-	for conn in cnList:
-		G.add_edge(conn.a.cId, conn.b.cId, object=conn)
-	return G
-
-
-# x and y are vectors of the same size
-def euclidean(c1,c2):
-	x = [c1.x,c1.y]
-	y = [c2.x,c2.y]
-	sumSq=0.0
-	for i in range(len(y)):
-		sumSq+=(x[i]-y[i])**2
-	return (sumSq**0.5)
-
-
+    G = nx.Graph()
+#    G.add_edge(cList[0].cId,cList[1].cId,object= cnList[0])
+    for city in cList:
+        G.add_node(city.cId, x = city.x, y = city.y, concentration = city.concentration)
+        #G[city.cId]['x'] = 'test'
+    for connection in cnList:
+        G.add_edge(connection.a.cId, connection.b.cId, object = connection)
+    return G
 
 #cList, cnList, G = parseFile('cenario_10.txt')
 #print  cList

@@ -1,10 +1,15 @@
 class City():
-	connections = []
-	x = 0
-	y = 0
-	concentration = 0
-	#0 is start, 1 is goal
-	cId = 0
-	def __repr__(self):
-		s = 'ID: ' + str(self.cId) +' X: ' +  str(self.x) + ' Y: ' + str(self.y)
-		return s
+
+    def __init__(self, id, x, y):
+        self.x = x
+        self.y = y
+        self.cId = id
+        self.connections = []
+        self.concentration = 0
+    
+    def __repr__(self):
+        s = 'ID: ' + str(self.cId) +' X: ' +  str(self.x) + ' Y: ' + str(self.y)
+        return s
+
+    def addConnection(self, connection):
+        self.connections.append(connection)
