@@ -1,4 +1,4 @@
-import parser
+import fileParser
 import networkx as nx
 import random
 
@@ -11,7 +11,7 @@ class Aco():
 	#Number of rounds
 	rounds = 1
 	def loadFile(self, f):
-		self.cities, self.connections, self.G = parser.parse(f)
+		self.cities, self.connections, self.G= fileParser.parseFile(f)
 
 	def main(self):
 		self.loadFile('cenario_10.txt')

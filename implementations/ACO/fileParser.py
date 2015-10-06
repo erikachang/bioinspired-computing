@@ -2,9 +2,9 @@
 import city as c
 import connection as cn
 import networkx as nx
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
-def parse(file):
+def parseFile(file):
 	f = open(file, 'r')
 	cId = 0
 	cityList = []
@@ -65,7 +65,9 @@ def euclidean(c1,c2):
 		sumSq+=(x[i]-y[i])**2
 	return (sumSq**0.5)
 
-#cList, cnList, G = parse('cenario_10.txt')
+
+
+#cList, cnList, G = parseFile('cenario_10.txt')
 #print  cList
 #print '\n=========\n'
 #print cnList
