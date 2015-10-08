@@ -116,6 +116,9 @@ class Aco():
             for connection in solution:
                 connection.concentration += self.Q / costs[count][1]        
             count += 1
+        #Elitist ant system
+        for connection in self.bestSolution[0]:
+             connection.concentration += self.Q / self.bestSolution[1] 
 
 if __name__ == "__main__":
     try:
