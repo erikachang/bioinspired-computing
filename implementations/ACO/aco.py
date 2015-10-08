@@ -11,17 +11,17 @@ DESTINATION_CITY = 1
 
 class Aco():
 
-    def __init__(self):
+    def __init__(self, alpha, beta, rho, k, iterations):
         self.cities = []
         self.connections = []
         self.G = nx.Graph()
         #Number of ants
-        self.k = 10
+        self.k = k
         #Number of rounds
-        self.rounds = 300
-        self.alpha = 0.5
-        self.beta = 0.5
-        self.p = 0.5
+        self.rounds = iterations
+        self.alpha = alpha
+        self.beta = beta
+        self.p = rho
         self.Q = 10
         self.bestSolution= [[], float("inf")]
     
@@ -119,9 +119,14 @@ class Aco():
 if __name__ == "__main__":
     try:
         file = sys.argv[1]
+        alpha = float(sys.argv[2])
+        beta = float(sys.argv[3])
+        rho = float(sys.argv[4])
+        k = int(sys.argv[5])
+        iterations = int(sys.argv[6])
     except:
-        print 'usage: aco.py <file_name>'
+        print 'usage: aco.py <file_name> <alpha> <beta> <rho> <k> <iterations>'
         sys.exit(0)
-    aco = Aco()
-    
+        
+    aco = Aco(alpha, beta, rho, k, iterations)
     aco.main(file)
