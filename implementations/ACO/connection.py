@@ -3,10 +3,20 @@ import city as c
 class Connection():
     concentration = 1
 
+    """ Creates a new connection object linking origin to destination.
+    
+    The euclidean distance is also calculated and stored for future use.
+    
+    - When origin and destination are equal, instead of calculating the distance (which is 0) we assign a high value to the connection,
+    so when calculating the heuristic this path has a lower probability of being chosen.
+    """
     def __init__(self, origin, destination):
         self.origin = origin
         self.destination = destination
-        self.size = self._euclidean(self.origin, self.destination)
+        if self.origin == self.destination:
+            self.size = 1000
+        else:
+            self.size = self._euclidean(self.origin, self.destination)
 
     def __repr__(self):
         s = str(self.origin.cId) + '|' +  str(self.destination.cId) 
