@@ -3,40 +3,40 @@ import city as c
 import connection as cn
 import networkx as nx
 
-def parseFile(file):
+def parse_file(file):
     f = open(file, 'r')
-    cId = 0
-    cityList = []
-    connectionList = []
-    connectionParse = False
+    city_index = 0
+    cities_list = []
+    connections_list = []
+    has_parsed_cities = False
     
     for line in f:
         if line in ['\n', '\r\n']:
-            connectionParse = True
+            has_parsed_cities = True
             continue
-        if connectionParse:
+        if has_parsed_cities:
             splitted = line.split('|')
-            con = cn.Connection(cityList[int(splitted[0])], cityList[int(splitted[1])])
-            connectionList.append(con)
-            # connection both ways
-            con = cn.Connection(cityList[int(splitted[1])], cityList[int(splitted[0])])
-            connectionList.append(con)
+            con = cn.Connection(cities_list[int(splitted[0])], cities_list[int(splitted[1])])
+            connections_list.append(con)
+            # create redundant connection
+            con = cn.Connection(cities_list[int(splitted[1])], cities_list[int(splitted[0])])
+            connections_list.append(con)
         else:
             splitted = line.split('|')
-            city = c.City(cId, int(splitted[0]), int(splitted[1]))
-            cityList.append(city)
-            cId += 1
+            city = c.City(city_index, int(splitted[0]), int(splitted[1]))
+            cities_list.append(city)
+            city_index += 1
             
     #populate connection in cities
-    for city in cityList:
-        for connection in connectionList:
+    for city in cities_list:
+        for connection in connections_list:
             if connection.origin is city:
-                city.addConnection(connection)
+                city.add_connection(connection)
                 
-    G = convertToNetworkx(cityList, connectionList)
-    return cityList, connectionList, G
+    G = convert_to_networkx(cities_list, connections_list)
+    return cities_list, connections_list, G
 
-def convertToNetworkx(cList, cnList):
+def convert_to_networkx(cList, cnList):
     G = nx.Graph()
 #    G.add_edge(cList[0].cId,cList[1].cId,object= cnList[0])
     for city in cList:
@@ -46,7 +46,7 @@ def convertToNetworkx(cList, cnList):
         G.add_edge(connection.origin.cId, connection.destination.cId, object = connection)
     return G
 
-#cList, cnList, G = parseFile('cenario_10.txt')
+#cList, cnList, G = parse_file('cenario_10.txt')
 #print  cList
 #print '\n=========\n'
 #print cnList

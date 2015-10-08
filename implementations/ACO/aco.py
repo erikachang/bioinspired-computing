@@ -1,4 +1,4 @@
-from fileParser import parseFile
+from fileParser import parse_file
 import networkx as nx
 import random
 import sys
@@ -25,7 +25,7 @@ class Aco:
         self.best_solution = [[], float("inf")]
 
     def load_file(self, f):
-        self.cities, self.connections, self.G = parseFile(f)
+        self.cities, self.connections, self.G = parse_file(f)
 
     def main(self, file):
         self.load_file(file)
@@ -54,14 +54,14 @@ class Aco:
             self.update_pheromones(solutions, costs)
         print self.best_solution
 
-    def next_city(self, ant, cityId):
+    def next_city(self, ant, city_index):
         # index = random.randint(0, len(self.cities[state].connections) - 1)
         denominator = 0
-        for connection in self.cities[cityId].connections:
+        for connection in self.cities[city_index].connections:
             denominator += (connection.concentration ** self.alpha) * ((1 / connection.size) ** self.beta)
 
         probabilities = []
-        for connection in self.cities[cityId].connections:
+        for connection in self.cities[city_index].connections:
             p = ((connection.concentration ** self.alpha) * ((1 / connection.size) ** self.beta)) / denominator
             probabilities.append(p)
 
@@ -76,7 +76,7 @@ class Aco:
         count = 0
         for range in ranges:
             if selection < range:
-                return self.cities[cityId].connections[count]
+                return self.cities[city_index].connections[count]
             count += 1
 
     def update_best_solution(self, solutions, costs):

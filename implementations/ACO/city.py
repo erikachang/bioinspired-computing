@@ -11,5 +11,5 @@ class City():
         s = 'ID: ' + str(self.cId) +' X: ' +  str(self.x) + ' Y: ' + str(self.y)
         return s
 
-    def addConnection(self, connection):
+    def add_connection(self, connection):
         self.connections.append(connection)
