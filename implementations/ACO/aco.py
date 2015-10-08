@@ -40,15 +40,15 @@ class Aco():
             costs = []
             for j in range(self.k):
                 #set to the initial state
-                currentState = ORIGIN_CITY
+                currentCity = ORIGIN_CITY
                 # operations of ant j
                 solution = []
                 cost = 0
-                while currentState != DESTINATION_CITY:
-                    action = self.getAction(j, currentState)
-                    solution.append(action)
-                    currentState = action.destination.cId
-                    cost += action.size
+                while currentCity != DESTINATION_CITY:
+                    city = self.nextCity(j, currentCity)
+                    solution.append(city)
+                    currentCity = city.destination.cId
+                    cost += city.size
                 costs.append([solution, cost])         
                 solutions.append(solution)
             # update best solution
@@ -57,7 +57,7 @@ class Aco():
             self.updatePheromones(solutions, costs)
         print self.bestSolution
 
-    def getAction(self, ant, cIndex):
+    def nextCity(self, ant, cIndex):
         # index = random.randint(0, len(self.cities[state].connections) - 1)
         denominator = 0
         for connection in self.cities[cIndex].connections:
@@ -87,9 +87,10 @@ class Aco():
         if sortedCosts[0][1] < self.bestSolution[1]:
             self.bestSolution = sortedCosts[0]
 
-    #Reduce every path ONLY ONE TIME using the evaporation coefficient (Rho -> self.p)
-    #We are also returning the cost of each solution here to improve performance
-    #NOT BEING USED
+    """ Reduce every path ONLY ONE TIME using the evaporation coefficient (Rho -> self.p)
+    We are also returning the cost of each solution here to improve performance
+    NOT BEING USED
+    """
     def updateRhoAndGetCost(self, solutions):
         alreadyUpdated = Set()
         costs = []
@@ -103,17 +104,17 @@ class Aco():
             costs.append(cost)
         return costs
     
-    #Update done in two steps: First we update the coefficient of evaporation of each connection, 
-    #then we compute how much pheromone was deposited in each connection
+    """ Update done in two steps: First we update the coefficient of evaporation of each connection, 
+    then we compute how much pheromone was deposited in each connection
+    """
     def updatePheromones(self, solutions, costs):
-        #costs = self.updateRhoAndGetCost(solutions)
         count = 0
         for city in self.cities:
            for connection in city.connections:
-               connection.concentration = connection.concentration * (1-self.p)
+               connection.concentration = connection.concentration * (1 - self.p)
         for solution in solutions:
             for connection in solution:
-                connection.concentration += self.Q/costs[count][1]        
+                connection.concentration += self.Q / costs[count][1]        
             count += 1
 
 if __name__ == "__main__":
@@ -125,7 +126,8 @@ if __name__ == "__main__":
         k = int(sys.argv[5])
         iterations = int(sys.argv[6])
     except:
-        print 'usage: aco.py <file_name> <alpha> <beta> <rho> <k> <iterations>'
+        print 'usage: aco.py <file_name> <pheromone weight: float> <heuristic weight: float> <pheromone evaporation: float> <number of ants: int> <iterations: int>'
+        print 'example: aco.py setup.txt 0.5 0.5 0.5 10 1000'
         sys.exit(0)
         
     aco = Aco(alpha, beta, rho, k, iterations)
