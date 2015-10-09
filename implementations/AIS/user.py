@@ -3,15 +3,19 @@ from sets import Set
 import operator
 
 class User():
-	movieRatings = []
-	biasList = []
-	name = ''
-	concentration = 10.0
+	
+	def __init__(self, name, biasList):
+		self.movieRatings = []
+		self.biasList = biasList
+		self.name = name
+		self.concentration = 10.0
+
 	def getMovieList(self):
 		movieList = []
 		for m in self.movieRatings:
 			movieList.append(m[0])
 		return movieList
+	
 	def __repr__(self):
 		#print '======================='
 		#print self.biasList
@@ -19,6 +23,7 @@ class User():
 		#for movie in self.movieRatings:
 		#	s = s + movie[0]['Title'].encode('utf-8') + ' ' + str(movie[1]) + '  ' + movie[0]['Genre'].encode('utf-8') +'\n'
 		return s
+	
 	def printUserInfo(self):
 		print '======================='
 		print self.biasList
