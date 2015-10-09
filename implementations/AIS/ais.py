@@ -2,6 +2,7 @@ import user as u
 import movieDB as mdb
 import random
 import math
+import json
 from sets import Set
 from operator import itemgetter, attrgetter, methodcaller
 
@@ -16,9 +17,32 @@ NEIGHBOURS_MAX = 10
 def main():
 	mdb.loadDB(mdb.FIXDB)
 	users = generateRandomUsers(1500,150)
-	print "Generated Users"
-	executeAIS(users[0],users[1:])
-	#print findNeighbors(users, users[0], 10)
+	#users = load('users.txt')
+	#save(users, 'users.txt') 
+	#executeAIS(users[0],users[1:])
+	print findNeighbors(users, users[0], 10)
+
+def load(file):
+	f = open(file, 'r')
+	users = []
+	for line in f:
+		jsonUser = json.loads(line)
+		user = u.User(jsonUser['name'], jsonUser['biasList'])
+		user.movieRatings = jsonUser['movieRatings']
+		users.append(user)
+	print('User database loaded!')
+	f.close()	
+	return users
+
+
+def save(users, file):
+	f = open(file,'w')
+	for user in users:
+		x = json.dumps(user, default=lambda o: o.__dict__)
+		f.write(x)
+		f.write("\n")
+	f.close()
+	print('Saved!')
 
 def executeAIS(antigen, users):
 	neighbors = users

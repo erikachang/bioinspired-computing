@@ -13,8 +13,14 @@ def getGenreList():
 def loadDB(file):
 	f = open(file, 'r')
 	for line in f:
-		test = json.loads(line)
-		movies.append(test)
+		movie = json.loads(line)
+		newMovie = dict()
+		newMovie['Title'] = movie['Title']
+		newMovie['Year'] = movie['Year']
+		newMovie['Genre'] = movie['Genre']
+		newMovie['Actors'] = movie['Actors']
+		newMovie['Director'] = movie['Director']
+		movies.append(newMovie)
 	print('Database loaded!')
 	f.close()
 
