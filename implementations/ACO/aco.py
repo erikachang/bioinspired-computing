@@ -3,6 +3,7 @@ import networkx as nx
 import random
 import sys
 import operator
+from solution import Solution
 from sets import Set
 
 ORIGIN_CITY = 0
@@ -22,36 +23,34 @@ class Aco:
         self.beta = beta
         self.p = rho
         self.Q = 10
-        self.best_solution = [[], float("inf")]
+        self.best_solution = None
 
     def load_file(self, f):
         self.cities, self.connections, self.G = parse_file(f)
 
     def main(self, file):
         self.load_file(file)
-        self.execute_aco()
+        print '{0:.1f}|{1:.1f}|{2:.1f}|{3:d}|{4:d}'.format(self.alpha, self.beta, self.p, self.k, self.rounds)
+        for i in range(10):
+            self.execute_aco()
 
     def execute_aco(self):
         for i in range(self.rounds):
             solutions = []
-            costs = []
             for j in range(self.k):
                 # set to the initial state
                 current_city = ORIGIN_CITY
                 # operations of ant j
-                solution = []
-                cost = 0
+                solution = Solution()
                 while current_city != DESTINATION_CITY:
                     city = self.next_city(j, current_city)
-                    solution.append(city)
+                    solution.add_city(city)
                     current_city = city.destination.cId
-                    cost += city.size
-                costs.append([solution, cost])
                 solutions.append(solution)
             # update best solution
-            self.update_best_solution(solutions, costs)
+            self.update_best_solution(solutions)
             # update pheromones trails
-            self.update_pheromones(solutions, costs)
+            self.update_pheromones(solutions)
         print self.best_solution
 
     def next_city(self, ant, city_index):
@@ -79,9 +78,9 @@ class Aco:
                 return self.cities[city_index].connections[count]
             count += 1
 
-    def update_best_solution(self, solutions, costs):
-        sorted_costs = sorted(costs, key=operator.itemgetter(1))
-        if sorted_costs[0][1] < self.best_solution[1]:
+    def update_best_solution(self, solutions):
+        sorted_costs = sorted(solutions, key=operator.attrgetter('cost'))
+        if self.best_solution is None or sorted_costs[0].cost < self.best_solution.cost:
             self.best_solution = sorted_costs[0]
 
     """ Reduce every path ONLY ONE TIME using the evaporation coefficient (Rho -> self.p)
@@ -105,18 +104,17 @@ class Aco:
     """ Update done in two steps: First we update the coefficient of evaporation of each connection, 
     then we compute how much pheromone was deposited in each connection
     """
-    def update_pheromones(self, solutions, costs):
+    def update_pheromones(self, solutions):
         count = 0
         for city in self.cities:
             for connection in city.connections:
                 connection.concentration *= (1 - self.p)
         for solution in solutions:
-            for connection in solution:
-                connection.concentration += self.Q / costs[count][1]
-            count += 1
+            for connection in solution.cities_traversed:
+                connection.concentration += self.Q / solution.cost
         #Elitist ant system
-        for connection in self.bestSolution[0]:
-             connection.concentration += self.Q / self.bestSolution[1] 
+        for connection in self.best_solution.cities_traversed:
+             connection.concentration += self.Q / self.best_solution.cost
 
 
 if __name__ == "__main__":
