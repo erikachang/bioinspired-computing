@@ -1,2 +1,2 @@
-0 // carros restantes ao fim da simulação
+9 // carros restantes ao fim da simulação
 0 // iterações ao fim da simulação
