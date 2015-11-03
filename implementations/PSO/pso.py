@@ -3,11 +3,11 @@ import random
 from subprocess import call
 from traffic_light import Traffic_light
 
-MAX_ITERATIONS = 500
+MAX_ITERATIONS = 20
 
 class Pso:
 
-    def __init__(self, population_size=100, traffic_lights=5, n_cars=300, n_iterations=60, seed=1):
+    def __init__(self, population_size=20, traffic_lights=5, n_cars=450, n_iterations=60, seed=2):
         
         self.population_size = population_size
         self.traffic_lights  = traffic_lights
@@ -27,8 +27,8 @@ class Pso:
             
             for i in range(self.traffic_lights):
                 # Start individual positions (traffic light times) radomly.
-                x.append(random.randint(1, 70))
-                v.append(random.randint(-40, 40))
+                x.append(random.randint(1, 100))
+                v.append(random.randint(-50, 50))
 
             self.population.append(Traffic_light(x, v))
 
@@ -53,6 +53,7 @@ class Pso:
 
                 if individual.p_best > p_best[0]:
                     # Get the higher p_best among all individuals.
+                    print individual.p_best, individual.x
                     p_best[0] = individual.p_best
                     p_best[1] = self.population.index(individual)
             
@@ -61,10 +62,10 @@ class Pso:
             for individual in self.population:
                 # Update velocities and times of traffic lights.
 
-                omega = random.randint(5, 10) / float(10)
+                omega = random.randint(0, 1) #/ float(10)
 
-                phi_1 = [random.randint(1, 10) / float(10) for i in range(self.traffic_lights)]
-                phi_2 = [random.randint(1, 10) / float(10) for i in range(self.traffic_lights)]
+                phi_1 = [random.randint(0, 1) for i in range(self.traffic_lights)]
+                phi_2 = [random.randint(0, 1) for i in range(self.traffic_lights)]
 
                 diff_p_x = [
                                 individual.p[i] - individual.x[i]
@@ -99,7 +100,7 @@ class Pso:
                 # print self.population.index(individual), individual.v
 
                 individual.x = [
-                                    int(individual.x[i] + individual.v[i]) + 1
+                                    int(abs(individual.x[i] + individual.v[i]))
                                     for i in range(self.traffic_lights)
                                ]
 
@@ -108,82 +109,23 @@ class Pso:
             total_iterations += 1
 
         self.write_solution(self.population[self.global_best])
-        self.execute_swarm()
-        self.print_result()
+        call(["java", "-jar", "SwarmOptimization_2.jar", "entrada/" ])
+        
+        for sent in self.get_result():
+            print sent
             
         return self.population[self.global_best]
 
     def calculate_fitness(self, individual):
         # Return the fitness of the individual applied to the scenario.
 
-        car_for_traffic_light = []
+        self.write_solution(individual)
+        self.execute_swarm()
+        output = self.get_result()
+        cars = output[0].split()[0]
+        iterations = output[1].split()[0]
 
-        copy_individual = copy.deepcopy(individual)
-
-        cars = self.n_cars      # Total number of cars;
-        iterations = self.n_iterations
-
-        for i in range(self.traffic_lights):
-            # Divide cars between each traffic light.
-            if i == 0:
-                car_for_traffic_light.append(0)
-            else:
-                car_for_traffic_light.append(self.n_cars / self.traffic_lights)
-
-        while iterations > 0 and cars > 0:
-            """
-                Simulate the traffic lights.
-                Each iteration is an unity of time for the traffic lights.
-                We start by the combination down, left, right.
-            """
-
-            # First intersaction.
-
-            if copy_individual.x[0] > 0:   
-                # Traffic light down.             
-                if car_for_traffic_light[0] > 0:
-                    car_for_traffic_light[0] -= 5   # Each iteration frees five cars.
-                    cars -= 5
-                copy_individual.x[0] -= 1           # Decrease time for the current traffic light.
-
-            elif copy_individual.x[1] > 0:
-                if car_for_traffic_light[1] > 0:
-                    car_for_traffic_light[1] -= 5
-                    cars -= 5
-                copy_individual.x[1] -= 1
-
-            elif copy_individual.x[2] > 0:
-                if car_for_traffic_light[2] > 0:
-                    car_for_traffic_light[2] -= 5
-                    cars -= 5
-                copy_individual.x[2] -= 1
-                if copy_individual.x[2] == 0:
-                    copy_individual.x[0] = individual.x[0]
-                    copy_individual.x[1] = individual.x[1]
-                    copy_individual.x[2] = individual.x[2]
-
-            # Second intersection.
-
-            if copy_individual.x[3] > 0:
-                # Traffic light down.
-                if car_for_traffic_light[3] > 0:
-                    car_for_traffic_light[3] -= 5   # Decrease the number of cars in the current traffic light.
-                    car_for_traffic_light[0] += 5   # Increase the number of cars in down 
-                copy_individual.x[3] -= 1
-
-            elif copy_individual.x[4] > 0:
-                # Traffic light left.
-                if car_for_traffic_light[4] > 0:
-                    car_for_traffic_light[4] -= 5
-                    car_for_traffic_light[0] += 5
-                copy_individual.x[4] -= 1
-                if copy_individual.x[4] == 0:
-                    copy_individual.x[3] = individual.x[3]
-                    copy_individual.x[4] = individual.x[4]
-
-            iterations -= 1
-
-        return (iterations + 1)/ float(cars + 1)
+        return (int(iterations) + 1)/ float(int(cars) + 1)
 
     def write_solution(self, best_solution):
         # Get the best individual and write on times file.
@@ -207,14 +149,13 @@ class Pso:
 
         call(["java", "-jar", "SwarmOptimization.jar", "entrada/" ])
 
-    def print_result(self):
+    def get_result(self):
 
         input_file = open("entrada/output_params.txt")
-        output = input_file.read()
+        output = input_file.readlines()
 
-        print output
+        return output
 
-        input_file.close()    
 
 if __name__ == "__main__":
     pso = Pso()
