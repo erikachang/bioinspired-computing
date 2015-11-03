@@ -79,6 +79,10 @@ def countDirectors(listMovies):
 
 	return directorMap
 
+def returnOrderedMap(map):
+	sorted_x = sorted(map.items(), key=operator.itemgetter(1))
+	return sorted_x[::-1]
+
 def printOrderedMap(map):
 	sorted_x = sorted(map.items(), key=operator.itemgetter(1))
 	for k, v in sorted_x:
@@ -88,8 +92,6 @@ def printMap(map):
 	for k, v in map.iteritems():
 		print k, v
 
-def checkMovie(movie):
-	print 'test'
 
 def main():
 	DB =  'movieListJson.txt'

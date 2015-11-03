@@ -9,18 +9,23 @@ from operator import itemgetter, attrgetter, methodcaller
 
 #not used yet
 dList = []
+
 STIMULATION_RATIO = 0.5
 SUPPRESION_RATIO = 0.3
 DEATH_RATIO = 0.3
 NEIGHBOURS_MAX = 10
+MAX_RECOMENDATIONS = 5
 
 def main():
 	mdb.loadDB(mdb.FIXDB)
-	users = generateRandomUsers(1500,150)
-	#users = load('users.txt')
+	#users = generateRandomUsers(1500,150)
+	users = load('users.txt')
 	#save(users, 'users.txt') 
 	#executeAIS(users[0],users[1:])
-	print findNeighbors(users, users[0], 10)
+	neighbours = findNeighbors(users, users[0], 10)
+	print neighbours
+	recomendMovies(users[0], neighbours)
+
 
 def load(file):
 	f = open(file, 'r')
@@ -30,7 +35,7 @@ def load(file):
 		user = u.User(jsonUser['name'], jsonUser['biasList'])
 		user.movieRatings = jsonUser['movieRatings']
 		users.append(user)
-	print('User database loaded!')
+	print 'User database loaded!'
 	f.close()	
 	return users
 
@@ -42,7 +47,35 @@ def save(users, file):
 		f.write(x)
 		f.write("\n")
 	f.close()
-	print('Saved!')
+	print 'Saved!'
+
+def recomendMovies(user, neighbors):
+	notWatchedFrequency = dict()
+	notWatchedScore = dict()
+	uMovieList = user.getMovieList()
+	for neighbor in neighbors:
+		for movieRating in neighbor[0].movieRatings:
+			if movieRating[0] not in uMovieList:
+				movieTitle = movieRating[0]['Title']
+				if(notWatchedScore.has_key(movieTitle)):
+					notWatchedFrequency[movieTitle] = notWatchedFrequency[movieTitle] + 1
+					notWatchedScore[movieTitle] = notWatchedScore[movieTitle] + movieRating[1]
+				else:
+					notWatchedFrequency[movieTitle] = 1
+					notWatchedScore[movieTitle] = movieRating[1]
+
+	normalizedScore = dict()
+	for key in notWatchedFrequency.keys():
+		normalizedScore[key] = notWatchedScore[key] / notWatchedFrequency[key]
+
+	sortedMap = mdb.returnOrderedMap(normalizedScore)
+	i = 0
+	for k, v in sortedMap:
+		print k, v
+		i += 1
+		if i == MAX_RECOMENDATIONS:
+			break
+
 
 def executeAIS(antigen, users):
 	neighbors = users
