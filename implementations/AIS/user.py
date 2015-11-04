@@ -16,6 +16,12 @@ class User():
 			movieList.append(m[0])
 		return movieList
 	
+	def getMovieMap(self):
+		movieMap = dict()
+		for m in self.movieRatings:
+			movieMap[m[0]['Title']] = m[1]
+		return movieMap
+
 	def __repr__(self):
 		#print '======================='
 		#print self.biasList
