@@ -1,3 +1,3 @@
-60 // iterações
-300// carros
-1 // seed
+60// iteracoes
+450// carros
+2// seed

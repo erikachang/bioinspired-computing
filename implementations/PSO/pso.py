@@ -1,13 +1,12 @@
-import copy
 import random
 from subprocess import call
 from traffic_light import Traffic_light
 
-MAX_ITERATIONS = 20
+MAX_ITERATIONS = 10
 
 class Pso:
 
-    def __init__(self, population_size=20, traffic_lights=5, n_cars=450, n_iterations=60, seed=2):
+    def __init__(self, population_size=60, traffic_lights=5, n_cars=450, n_iterations=60, seed=2): 
         
         self.population_size = population_size
         self.traffic_lights  = traffic_lights
@@ -15,32 +14,58 @@ class Pso:
         self.population      = []
         self.n_cars          = n_cars
         self.n_iterations    = n_iterations
-        random.seed(seed)
+        self.seed            = seed
+        random.seed(self.seed)
 
     def create_population(self):
         # Create a population of traffic light configurations.
 
+        max_time = random.randint(10, 50)
+        max_vel  = random.randint(20, 40)
+        min_vel  = random.randint(-40, -20)
+
         for individual in range(self.population_size):
-            
+           
             x = []      # List with times for a configuration.
             v = []      # List with velocities for each configuration
-            
+
             for i in range(self.traffic_lights):
                 # Start individual positions (traffic light times) radomly.
-                x.append(random.randint(1, 100))
-                v.append(random.randint(-50, 50))
+                x.append(random.randint(1, max_time))
+                v.append(random.randint(min_vel, max_vel))
 
             self.population.append(Traffic_light(x, v))
+
+    def write_input_param(self):
+
+        input_file = open("entrada/input_params.txt", 'w')
+
+        iterations = str(self.n_iterations) + "// iteracoes"
+
+        cars       = str(self.n_cars) + "// carros"
+
+        seed       = str(self.seed) + "// seed"
+
+        input_file.write(iterations + "\n" + cars + "\n" + seed)
+
+        input_file.close()
+
 
     def execute_POS(self):
         
         self.create_population()
 
+        self.write_input_param()
+
         total_iterations = 0
 
         p_best = [0, 0]
 
-        while total_iterations < MAX_ITERATIONS:
+        best_result = None
+
+        while total_iterations < MAX_ITERATIONS and best_result < 3:
+
+            print "Iteration: ", total_iterations + 1
 
             for individual in self.population:
                 # Given the fitness, update p_best, p, and global_best.
@@ -53,16 +78,15 @@ class Pso:
 
                 if individual.p_best > p_best[0]:
                     # Get the higher p_best among all individuals.
-                    print individual.p_best, individual.x
                     p_best[0] = individual.p_best
                     p_best[1] = self.population.index(individual)
             
             self.global_best = p_best[1] 
             
             for individual in self.population:
-                # Update velocities and times of traffic lights.
-
-                omega = random.randint(0, 1) #/ float(10)
+                
+                # Update velocities
+                omega = random.randint(0, 1)
 
                 phi_1 = [random.randint(0, 1) for i in range(self.traffic_lights)]
                 phi_2 = [random.randint(0, 1) for i in range(self.traffic_lights)]
@@ -97,14 +121,15 @@ class Pso:
                                     for i in range(self.traffic_lights)
                                ]    # Update individual velocity.
 
-                # print self.population.index(individual), individual.v
 
-                individual.x = [
-                                    int(abs(individual.x[i] + individual.v[i]))
-                                    for i in range(self.traffic_lights)
-                               ]
-
-                # print self.population.index(individual), individual.x
+                for i in range(self.traffic_lights):
+                    # Update individual's position
+                    result = int(abs(individual.x[i] + individual.v[i]))
+                    if not result:
+                        # If the value is equal 0, we add 1.
+                        individual.x[i] = result + 1
+                    else:
+                        individual.x[i] = result
 
             total_iterations += 1
 
@@ -153,6 +178,7 @@ class Pso:
 
         input_file = open("entrada/output_params.txt")
         output = input_file.readlines()
+        input_file.close()
 
         return output
 
