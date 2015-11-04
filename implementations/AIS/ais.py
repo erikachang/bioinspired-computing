@@ -22,9 +22,11 @@ def main():
 	users = load('users.txt')
 	#save(users, 'users.txt') 
 	#executeAIS(users[0],users[1:])
-	neighbours = findNeighbors(users, users[0], 10)
+	neighbours = findNeighbors(users, users[8], 10)
+	print compare(users[8], users[8])
 	print neighbours
-	recomendMovies(users[0], neighbours)
+	recomendMovies(users[8], neighbours)
+	print users[8].biasList
 
 
 def load(file):
@@ -208,7 +210,27 @@ def compare(user1,user2):
 	for genre in overlappedGenres:
 		sum3 += pow(( (u2GenreRate[genre] - averageOfVector(u2GenreRate.values()))), 2)
 	pearson = sum1 / pow((sum3*sum2),0.5)
-	return pearson
+	
+	#second pearson
+	u1MovieMap =  user1.getMovieMap()
+	u2MovieMap =  user2.getMovieMap()
+	overlappedMovies = []
+	for movie1 in u1MovieMap.keys():
+		if movie1 in u2MovieMap.keys():
+			overlappedMovies.append(movie1)
+	sum1 = 0.0
+	for movie in overlappedMovies:
+		sum1 += ( (u1MovieMap[movie] - averageOfVector(u1MovieMap.values())) * (u2MovieMap[movie] - averageOfVector(u2MovieMap.values())) )
+	sum2 = 0.0
+	for movie in overlappedMovies:
+		sum2 += pow(( (u1MovieMap[movie] - averageOfVector(u1MovieMap.values()))), 2)
+	sum3 = 0.0
+	for movie in overlappedMovies:
+		sum3 += pow(( (u2MovieMap[movie] - averageOfVector(u2MovieMap.values()))), 2)
+	pearson2 = sum1 / pow((sum3*sum2),0.5)
+
+
+	return (pearson2*0.8 + pearson*0.2)
 
 #calculate the average value of a vector
 def averageOfVector(vector):
