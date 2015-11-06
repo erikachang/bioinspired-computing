@@ -92,7 +92,6 @@ def printMap(map):
 	for k, v in map.iteritems():
 		print k, v
 
-
 def main():
 	DB =  'movieListJson.txt'
 	while True:
