@@ -455,7 +455,7 @@
 		    There are many theories about the immune system:
 		    
 		    \begin{itemize}
-		        \item Classical View ("Static theories")
+		        \item Classical View (``Static theories'')
 		        \begin{itemize}
     		        \item Negative Selection: ``Kill that which is `self-aware'.''
     		        \item Clonal Selection: ``That which is good, should be maintained. That which is not, should not.''
@@ -665,34 +665,55 @@
     \begin{frame}{Immune Networks}
         \begin{itemize}
             \item Interconnectivity between immune cells;
-            \item Cells stimulate and suppress one another, no need of external stimulation;
-            \item Network is dynamic and is stimulated by the introduction of antigens.
+            \item Cells stimulate and suppress one another, they no longer need external stimulation;
+            \item Network is dynamic, antibodies may die and be replaced by new ones;
+            \item Antigens introduce an imbalance to the network.
         \end{itemize}
-        
-        \todo[inline,author=SC]{Fill this section in.}
     \end{frame}
     
     \begin{frame}{Immune Networks}
-        \SetEndCharOfAlgoLine{}
-        \scalebox{0.75}{
-        \begin{algorithm}[H]
-            \KwIn{$G$, a set of antigen pairs $\langle g, c_g \rangle$}
-            \KwIn{$B$, a set of antibody pairs $\langle b, c_b \rangle$}
-            \KwOut{$I$, the adjusted immune network}
-            
-            \ForAll{$(g, c_g) \in G$} {
-                \ForAll{$(b, c_b) \in B$} {
-                    $a \gets $ \textit{Affinity}$(g,b)$\\
-                    $\vec{y} \gets $ \textit{Affinities}$(b,B)$
-                    
-                    \Repeat{\textit{convergence}} {
-                        
-                    }
-                }
-            }
-            
-        \caption{CLONALG, an algorithm for clonal selection.}
-        \end{algorithm}}
+        \begin{itemize}
+            \item Antibodies: epitopes and paratopes;
+            \item Antigens: epitopes only;
+            \item Stimulation: when a paratope recognises an epitope;
+            \item Supression: when an epitope is recognised by a paratope;
+        \end{itemize}
+    \end{frame}
+    
+    \begin{frame}{Immune Networks}
+        \begin{itemize}
+            \item Stimulation leads to reproduction;
+            \item Suppression leads to death;
+            \item Antibodies have a natural death rate.
+        \end{itemize}
+    \end{frame}    
+    
+    \begin{frame}{Immune Networks}
+        \begin{itemize}
+            \item No pseudo-algorithm;
+            \item It is governed by ODEs:
+        \end{itemize}
+        
+        The concentration of each antibody $c_{i}$ can be obtained by:
+        
+        $$ \frac{dc_{i}}{dt} = k_{1} \left[ \sum^{N_{1}}_{j=1}{m_{ji}c_{i}c_{j}} - k_{2} \sum^{N_{1}}_{j=1}{m_{ij}c_{i}c_{j}} + \sum^{N_{2}}_{j=1}{m_{ji}c_{i}y_{j}} \right] - k_{3}c{i} $$
+        
+    \end{frame}
+    
+    \begin{frame}{Concentrations}
+        The concentration of each antibody $c_{i}$ can be obtained by:
+        
+        $$ \frac{dc_{i}}{dt} = k_{1} \left[ \sum^{N_{1}}_{j=1}{m_{ji}c_{i}c_{j}} - k_{2} \sum^{N_{1}}_{j=1}{m_{ij}c_{i}c_{j}} + \sum^{N_{2}}_{j=1}{m_{ji}c_{i}y_{j}} \right] - k_{3}c{i} $$
+        
+        where:
+        
+        \begin{itemize}
+            \item 1
+            \item 2
+            \item 3
+            \item 4
+        \end{itemize}
+        
     \end{frame}
     
     \begin{frame}{Danger Theory}
