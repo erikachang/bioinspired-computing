@@ -43,6 +43,8 @@ class Aco:
                 # operations of ant j
                 solution = Solution()
                 while current_city != DESTINATION_CITY:
+                    if self.best_solution is not None and solution.cost > self.best_solution.cost:
+                        break
                     city = self.next_city(j, current_city)
                     solution.add_city(city)
                     current_city = city.destination.cId
