@@ -39,11 +39,11 @@
 
 \author[Aires, Amado, Chang, Collioni, Macedo]
     {
-        Alessandro Collioni\and
-        João Paulo Aires\\ \vspace{0.25em}
+        João Paulo Aires\and
         Leonardo Amado\and
-        Rafael Macedo\and
-        Stephan Chang
+        Stephan Chang\\ \vspace{0.25em}
+        Alessandro Collioni\and
+        Rafael Macedo
     }
 
 \date{November 12, 2015}
@@ -54,15 +54,6 @@
         Porto Alegre -- Brazil
     }
 
-
-%\AtBeginSection[]
-%{
-%  \begin{frame}<beamer>
-%    \frametitle{Outline}
-%    \tableofcontents[currentsection]
-%  \end{frame}
-%}
-
 \begin{document}
 
     \maketitle
@@ -70,23 +61,23 @@
 	\introframe{Introduction}{What is it and why use it?}
 	
 	\begin{frame}{Artificial Immune Systems}
-            \textbf{What are they?}
+        \textbf{What are they?}
         
-            \begin{itemize}
-                \item AIS is the product of Immune Engineering;
+        \begin{itemize}
+            \item AIS is the product of Immune Engineering;
 				\item Immune Engineering develops models that are inspired by the Immune System;
-                \item Multiple models of the Immune System serve as  metaphors to solve different kinds of problems.
-            \end{itemize}
-            
-        \end{frame}
-        \begin{frame}{Artificial Immune Systems}            
-            \textbf{What are they not?}
-            
-            \begin{itemize}
-                \item AIS is not supposed to be a computational reconstruction of the immune system;
-                \item Evolutionary Algorithms (although they can be used within AIS)
-            \end{itemize}    
-    	\end{frame}
+            \item Multiple models of the Immune System serve as  metaphors to solve different kinds of problems.
+        \end{itemize}        
+    \end{frame}
+    
+    \begin{frame}{Artificial Immune Systems}            
+        \textbf{What are they not?}
+        
+        \begin{itemize}
+            \item AIS is not supposed to be a computational reconstruction of the immune system;
+            \item Evolutionary Algorithms (although they can be used within AIS)
+        \end{itemize}    
+	\end{frame}
     	
         \begin{frame}{Artificial Immune Systems}
             \only<1>{\textbf{How can we apply AIS?}}
@@ -219,9 +210,8 @@
             \end{figure}
         \end{frame}
         
-        \section{Artificial Immune Systems}
+
     
-    \subsection{Principles}
     
     \introframe{Artificial Immune Systems}{Representation and General Principles}
     
@@ -466,9 +456,7 @@
 		        \item Danger Theory: ``The important thing is not who is who, but if `who' is bad.''
 		    \end{itemize}
 		\end{frame}
-		
-	\subsection{Algorithms}
-	
+			
         \introframe{Artificial Immune Systems}{In-depth Theories and Algorithms}
 
         \begin{frame}{Immune Algorithms}
@@ -696,51 +684,44 @@
         
         The concentration of each antibody $c_{i}$ can be obtained by:
         
-        $$ \frac{dc_{i}}{dt} = k_{1} \left[ \sum^{N_{1}}_{j=1}{m_{ji}c_{i}c_{j}} - k_{2} \sum^{N_{1}}_{j=1}{m_{ij}c_{i}c_{j}} + \sum^{N_{2}}_{j=1}{m_{ji}c_{i}y_{j}} \right] - k_{3}c{i} $$
+        $$ \frac{dc_{i}}{dt} = k_{1} \left[ \sum^{N_{1}}_{j=1}{m_{ji}c_{i}c_{j}} - k_{2} \sum^{N_{1}}_{j=1}{m_{ij}c_{i}c_{j}} + \sum^{N_{2}}_{j=1}{m_{ji}c_{i}y_{j}} \right] - k_{3}c_{i} $$
+        
+        \center Network St $-$ Network Supp $+$ Ab St $-$ Ab death rate
         
     \end{frame}
     
     \begin{frame}{Concentrations}
         The concentration of each antibody $c_{i}$ can be obtained by:
         
-        $$ \frac{dc_{i}}{dt} = k_{1} \left[ \sum^{N_{1}}_{j=1}{m_{ji}c_{i}c_{j}} - k_{2} \sum^{N_{1}}_{j=1}{m_{ij}c_{i}c_{j}} + \sum^{N_{2}}_{j=1}{m_{ji}c_{i}y_{j}} \right] - k_{3}c{i} $$
+        $$ \frac{dc_{i}}{dt} = k_{1} \left[ \sum^{N_{1}}_{j=1}{m_{ji}c_{i}c_{j}} - k_{2} \sum^{N_{1}}_{j=1}{m_{ij}c_{i}c_{j}} + \sum^{N_{2}}_{j=1}{m_{ji}c_{i}y_{j}} \right] - k_{3}c_{i} $$
         
         where:
         
         \begin{itemize}
-            \item 1
-            \item 2
-            \item 3
-            \item 4
+            \item $k_{1}$ is the coefficient of antibody reproduction;
+            \item $k_{2}$ is an offset between suppression and stimulation;
+            \item $k_{3}$ is the natural death rate.
         \end{itemize}
-        
     \end{frame}
     
     \begin{frame}{Danger Theory}
-		    \begin{itemize}
-		        \item Molecules don't distinguish \textit{self} from \textit{non-self}
-		        \item Stressed or damaged cells and tissues emit signals
-		        \item Antibodies pick up on those signals
-		        \item Explains some facts about immunology (tumours and beneficial bacteria)
-		    \end{itemize}
-		\end{frame}
+		\begin{itemize}
+		    \item Molecules don't distinguish \textit{self} from \textit{non-self}
+            \item Stressed or damaged cells and tissues emit signals
+	        \item Antibodies pick up on those signals
+	        \item Explains some facts about immunology (tumours and beneficial bacteria)
+	    \end{itemize}
+	\end{frame}
 
-         
-    \section{References}
-    
     \begin{frame}
     	TODO: Set-up References
     \end{frame}     
             
-    \section{Problem}
-    
-    	\begin{frame}{Artificial Immune Systems -- Problem}
-        	 
-            \begin{itemize}
-				\item Collaborative Filtering
-                \item Movie Recommendation System
-                \item OMDB
-			\end{itemize}
-            
-       \end{frame}
+	\begin{frame}{Artificial Immune Systems -- Problem}
+        \begin{itemize}
+			\item Collaborative Filtering
+            \item Movie Recommendation System
+            \item OMDB
+		\end{itemize}
+   \end{frame}
 \end{document}
