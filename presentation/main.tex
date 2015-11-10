@@ -676,7 +676,7 @@
         \end{itemize}
     \end{frame}    
     
-    \begin{frame}{Immune Networks}
+    \begin{frame}{Continuous Immune Network}
         \begin{itemize}
             \item No pseudo-algorithm;
             \item It is governed by ODEs:
@@ -690,7 +690,7 @@
         
     \end{frame}
     
-    \begin{frame}{Concentrations}
+    \begin{frame}{Continuous Immune Network}
         The concentration of each antibody $c_{i}$ can be obtained by:
         
         $$ \frac{dc_{i}}{dt} = k_{1} \left[ \sum^{N_{1}}_{j=1}{m_{ji}c_{i}c_{j}} - k_{2} \sum^{N_{1}}_{j=1}{m_{ij}c_{i}c_{j}} + \sum^{N_{2}}_{j=1}{m_{ji}c_{i}y_{j}} \right] - k_{3}c_{i} $$
@@ -698,18 +698,34 @@
         where:
         
         \begin{itemize}
-            \item $k_{1}$ is the coefficient of antibody reproduction;
-            \item $k_{2}$ is an offset between suppression and stimulation;
+            \item $m_{ij}$ is a function that expresses the stimulation of element $j$ by element $i$;
+            \item $k_{1}$ is the coefficient of antibody growth;
+            \item $k_{2}$ is a ratio between stimulation and suppression;
             \item $k_{3}$ is the natural death rate.
         \end{itemize}
     \end{frame}
     
-    \begin{frame}{Danger Theory}
+    \begin{frame}{Continuous Immune Network}
+        \textbf{What about the population?}
+        \pause
+        
+        \vspace{1em}
+        \begin{itemize}
+            \item Assume a set of antibodies $P$
+            \item We define a variable $N$ to constrain the number of elements in the network;
+            \item Create a network containing $N$ random elements from $P$
+            \item Compute the ODEs for each antibody in the network
+            \item As antibodies die, replace them with random elements of $P$
+            \item Rinse and repeat until convergence
+        \end{itemize}
+    \end{frame}
+    
+    \begin{frame}{Extra: Danger Theory}
 		\begin{itemize}
-		    \item Molecules don't distinguish \textit{self} from \textit{non-self}
-            \item Stressed or damaged cells and tissues emit signals
-	        \item Antibodies pick up on those signals
-	        \item Explains some facts about immunology (tumours and beneficial bacteria)
+		    \item Molecules don't distinguish \textit{self} from \textit{non-self};
+            \item Stressed or damaged cells and tissues emit danger signals;
+	        \item Antibodies pick up on those signals and initiate immune responses;
+	        \item Danger Theory explains some facts about immunology, like tumours, auto-immune responses and beneficial bacteria found within our bodies.
 	    \end{itemize}
 	\end{frame}
 
@@ -717,7 +733,15 @@
     	TODO: Set-up References
     \end{frame}     
             
-	\begin{frame}{Artificial Immune Systems -- Problem}
+    \introframe{Challenge:\\ \hfill \Large{A Movie Recommender System}}{ 
+        \includegraphics[width=85px]{fig/2001-poster}
+        \hfill
+        \includegraphics[width=85px]{fig/taxidriverposter}
+        \hfill
+        \includegraphics[width=85px]{fig/blade_runner}}
+        
+            
+	\begin{frame}{Challenge}
         \begin{itemize}
 			\item Collaborative Filtering
             \item Movie Recommendation System
