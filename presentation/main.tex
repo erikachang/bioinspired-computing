@@ -591,64 +591,79 @@
                 \end{algorithm}}
                 \centering
         \end{frame}
+        
+    \begin{frame}{Applications}
+        \begin{itemize}
+            \item Anomaly Detection
+            \item Intrusion Detection Systems
+            \item Classification (Breast Cancer Diagnosis)
+        \end{itemize}
+    \end{frame}
+        
+    \begin{frame}{Clonal Selection}
+        \begin{itemize}
+            \item Immune Systems sleep when not responding to invasions;
+            \item On invasion, only the most responsive antibodies wake up;
+            \item Antibodies are \textbf{selected} for binding with antigens;
+            \item Selected antibodies reproduce by mitosis;
+            \item Mutation occurs during reproduction.
+            \item Affinity Maturation
+        \end{itemize}
+    \end{frame}
+    
+    \begin{frame}{Clonal Selection}
+        \includegraphics[width=\textwidth]{fig/clonal_selection}
+    \end{frame}
+    
+    \begin{frame}{Clonal Selection}
+        \begin{itemize}
+            \item Can be done with an evolutionary approach;
+            \item Fast responses when threats are known;
+            \item Cells are mutated to respond to unknown threats;
+            \item Process is local: occurs near infected areas.
+        \end{itemize}
+    \end{frame}
+    
+    \begin{frame}{Clonal Selection}
+        \begin{itemize}
+            \item Forrest's Algorithm (genetic approach)
+            \item CLONALG
+        \end{itemize}
+    \end{frame}
+    
+    \begin{frame}{CLONALG}
+        \SetEndCharOfAlgoLine{}
+        \scalebox{0.75}{
+        \begin{algorithm}[H]
+            \KwIn{$S$, a set of patterns to be recognised}
+            \KwIn{$e$, the number of individuals to select}
+            \KwIn{$r$, the number of individuals to be replaced}
+            generate initial population $P$\\
 
-        
-        \begin{frame}{Clonal Selection}
-            \begin{itemize}
-                \item Immune Systems sleep when not responding to invasions;
-                \item On invasion, only the most responsive antibodies wake up;
-                \item Antibodies are \textbf{selected} for binding with antigens;
-                \item Selected antibodies reproduce by mitosis;
-                \item Mutation occurs during reproduction.
-                \item Affinity Maturation
-            \end{itemize}
-        \end{frame}
-        
-        \begin{frame}{Clonal Selection}
-            \includegraphics[width=\textwidth]{fig/clonal_selection}
-        \end{frame}
-        
-        \begin{frame}{Clonal Selection}
-            \begin{itemize}
-                \item Can be done with an evolutionary approach;
-                \item Fast responses when threats are known;
-                \item Cells are mutated to respond to unknown threats;
-                \item Process is local: occurs near infection areas.
-            \end{itemize}
-        \end{frame}
-        
-        \begin{frame}{Clonal Selection}
-            \begin{itemize}
-                \item Forrest's Algorithm (genetic approach)
-                \item CLONALG
-            \end{itemize}
-        \end{frame}
-        
-        \begin{frame}{CLONALG}
-            \SetEndCharOfAlgoLine{}
-            \scalebox{0.75}{
-            \begin{algorithm}[H]
-                \KwIn{$S$, a set of patterns to be recognised}
-                \KwIn{$e$, the number of individuals to select}
-                \KwIn{$r$, the number of individuals to be replaced}
-                generate initial population $P$\\
-
-                \While{stopping condition not \textbf{true}} {
-                    \For{$i \gets 0$ \textbf{to} $|S|$} {
-                        Calculate the affinities between $S_{i}$ and each member of $P$\\
-                        Select $e$ individuals with the highest affinities\\
-                        Clone selected individuals with a rate proportional to their affinity\\
-                        Mutate cloned individuals with a rate inversely proportional to their affinity\\
-                        Recalculate affinities between $S_{i}$ and each member of the new population\\
-                        Assign the highest affinity antibody to $M_{i}$\\
-                        Replace $r$ individuals with the lowest affinities in $P$ with new ones\\ 
-                    }
+            \While{stopping condition not \textbf{true}} {
+                \For{$i \gets 0$ \textbf{to} $|S|$} {
+                    Calculate the affinities between $S_{i}$ and each member of $P$\\
+                    Select $e$ individuals with the highest affinities\\
+                    Clone selected individuals with a rate proportional to their affinity\\
+                    Mutate cloned individuals with a rate inversely proportional to their affinity\\
+                    Recalculate affinities between $S_{i}$ and each member of the new population\\
+                    Assign the highest affinity antibody to $M_{i}$\\
+                    Replace $r$ individuals with the lowest affinities in $P$ with new ones\\ 
                 }
-                \textbf{return} $M$
-                \caption{CLONALG, an algorithm for clonal selection.}
-                \end{algorithm}}
-                \centering
-        \end{frame}
+            }
+            \textbf{return} $M$
+            \caption{CLONALG, an algorithm for clonal selection.}
+            \end{algorithm}}
+            \centering
+    \end{frame}
+        
+    \begin{frame}{Applications}
+        \begin{itemize}
+            \item Pattern Recognition
+            \item Learning and Data Mining
+            \item Optimisation
+        \end{itemize}
+    \end{frame}
 
     \begin{frame}{Immune Networks}
         \begin{itemize}
@@ -673,8 +688,13 @@
             \item Stimulation leads to reproduction;
             \item Suppression leads to death;
             \item Antibodies have a natural death rate.
+            \item Two approaches:
+            \begin{itemize}
+                \item Continuous
+                \item Discrete
+            \end{itemize}
         \end{itemize}
-    \end{frame}    
+    \end{frame}
     
     \begin{frame}{Continuous Immune Network}
         \begin{itemize}
@@ -720,8 +740,16 @@
         \end{itemize}
     \end{frame}
     
-    \begin{frame}{Applications}
-        
+    \introframe{Extra}{Discrete IMs and Danger Theory}
+    
+    \begin{frame}{Extra: Discrete Immune Networks}
+        \begin{itemize}
+            \item Can be governed by ODEs or by iterative processes
+            \item Variation is no longer restricted to concentration
+            \item Commonly used to solve specific problems
+            \item Data Compression 
+            \item Clustering
+        \end{itemize}
     \end{frame}
     
     \begin{frame}{Extra: Danger Theory}
