@@ -55,7 +55,7 @@
     }
 
 \begin{document}
-
+    \setbeamercolor{background canvas}{bg=white}
     \maketitle
 
     \introframe{Introduction}{What is it and why use it?}
@@ -182,7 +182,7 @@
         \end{frame}
         
         \begin{frame}{Immunology Basics}
-            \only<1>{\textbf{But how do they recognise each other? Is it love?}}
+            \only<1>{\textbf{But how do they match each other? Is it love?}}
             \only<2->{\textbf{NO!} There is no love. It is purely chemistry.}
             \vspace{1em}
             \pause
@@ -205,7 +205,7 @@
         \begin{frame}{Immunology Basics}
             \begin{figure}
                 \centering
-                \includegraphics[width=0.7\textwidth]{fig/phagocytosis}
+                \includegraphics[width=0.7\textwidth]{fig/phagocytosis2}
                 \caption{When the antigen is overwhelmed, the cavalry arrives to save the day. The depicted cell is a phagocyte.}
             \end{figure}
         \end{frame}
@@ -409,25 +409,33 @@
             }
         \end{frame}
         
-        \begin{frame}{Affinity Threshold}
-            \textbf{But wait!}
+        \begin{frame}{Affinity}
+            \only<1>{So, if there's at least one thing in common between them, they match!}
+            \only<2->{
+            \textbf{Not necessarily!}
         
             \begin{itemize}
-                \item Not any match is a match!
-                \item 20\% match is as good as nothing.
-                \item ``That tiger looks 20\% like a cat. A bit too big, though...''
+                \item Not any match is a (good) match!
+                \item 20\% match may be as good as nothing.
                 \item How do we define a good match?
-                \pause
-                \item By establishing a \textbf{threshold}!
             \end{itemize}
+            
+            \only<3>{Affinity \textbf{Threshold}!}
+            
+            \vfill
+            \hfill\includegraphics[width=100px]{fig/cat}
+            }
         \end{frame}
         
         \begin{frame}{Summarising}
             \begin{itemize}
                 \item So we have antibodies and antigens;
-                \item And they can match their shapes;
-                \item But what if our antibodies don't reach the threshold?
+                \item And they can match each other via epitopes and paratopes;
+                \item What if no antibody reaches the threshold?
             \end{itemize}
+            
+            \vfill
+            \hfill\includegraphics[width=50px]{fig/xkcd_doubt}
         \end{frame}
         
         \begin{frame}{Adaptation}
@@ -516,21 +524,18 @@
         
         \begin{frame}{Negative Selection}
             \begin{itemize}
-                \only<1>{\item Based on the theory of negative selection in the Thymus;
+                \item Based on the theory of negative selection in the Thymus;
                 \item Cells that dwell in the thymus are \textit{self};
                 \item T-Cells are tested against other cells;
-                \item If recognition occurs, they are purged!}
-                \only<2>{
+                \item If recognition occurs, they are purged!
                 \item Cells that do not recognise self are deployed;
-                \item The set of cells that exit the Thymus are called \textbf{detectors};
-                \item Used for anomaly detection;
-                \item Ideal for Intrusion Detection Systems.}
+                \item The set of cells that exit the Thymus are called \textbf{detectors}.
             \end{itemize}
         \end{frame}
         
         \begin{frame}{Negative Selection}
-            Divided in two phases:
-            
+            The algorithm is divided into two phases:
+            \vspace{1em}
             \begin{itemize}
                 \item Censoring phase
                 \item Monitoring phase
@@ -587,7 +592,7 @@
                 
                 \textbf{return false}
 
-                \caption{Pseudo-algorithm for the censoring phase.}
+                \caption{Pseudo-algorithm for the monitoring phase.}
                 \end{algorithm}}
                 \centering
         \end{frame}
@@ -606,8 +611,8 @@
             \item On invasion, only the most responsive antibodies wake up;
             \item Antibodies are \textbf{selected} for binding with antigens;
             \item Selected antibodies reproduce by mitosis;
-            \item Mutation occurs during reproduction.
-            \item Affinity Maturation
+            \item Mutation occurs during reproduction;
+            \item $\rightarrow$ \textbf{Affinity Maturation}.
         \end{itemize}
     \end{frame}
     
@@ -617,17 +622,9 @@
     
     \begin{frame}{Clonal Selection}
         \begin{itemize}
-            \item Can be done with an evolutionary approach;
-            \item Fast responses when threats are known;
-            \item Cells are mutated to respond to unknown threats;
-            \item Process is local: occurs near infected areas.
-        \end{itemize}
-    \end{frame}
-    
-    \begin{frame}{Clonal Selection}
-        \begin{itemize}
-            \item Forrest's Algorithm (genetic approach)
-            \item CLONALG
+            \item Genetic programming is a possibility;
+            \item Fast responses for known threats;
+            \item Cells are mutated to respond to unknown threats.
         \end{itemize}
     \end{frame}
     
